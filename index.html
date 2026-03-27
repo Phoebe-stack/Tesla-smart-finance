@@ -16,136 +16,111 @@
   <title>Tesla-smart-finance</title>
   <script src="https://cdn.tailwindcss.com"></script>
 <script>
+  // Removed dark mode selector config
   tailwind.config = {
-        darkMode: ['selector', '.dark-mode'], 
+    theme: {
+      extend: {}
+    }
   }
 </script>
-  <style type="text/css">
-    @keyframes marquee {
-      0% { transform: translateX(0); }
-      100% { transform: translateX(-50%); } 
+
+<style type="text/css">
+  /* --- 1. Global Reset & Permanent Theme --- */
+  :root {
+    /* Set these once to your preferred permanent look */
+    --bg-color: #121212;
+    --text-color: #f5f5f5;
+    --accent-red: #c2362c;
+  }
+
+  body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    margin: 0;
+    font-family: sans-serif; /* Default, overridden by .besley where applied */
+  }
+
+  /* --- 2. Animations (Marquee) --- */
+  @keyframes marquee {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); } 
+  }
+
+  .animate-marquee {
+    display: flex;
+    width: max-content;
+    animation: marquee 40s linear infinite;
+  }
+
+  .animate-marquee:hover {
+    animation-play-state: paused;
+  }
+
+  /* --- 3. UI Elements --- */
+  .besley {
+    font-family: "Besley", serif;
+  }
+
+  .cta-bg {
+    background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), 
+                url('https://images.unsplash.com/photo-1485827404703-89b55fcc595e?auto=format&fit=crop&q=80&w=2070');
+    background-size: cover;
+    background-position: center;
+  }
+
+  .lang-scroll::-webkit-scrollbar { width: 5px; }
+  .lang-scroll::-webkit-scrollbar-track { background: transparent; }
+  .lang-scroll::-webkit-scrollbar-thumb { background: #e5e7eb; border-radius: 10px; }
+  
+  .slide-up { animation: slideUp 0.2s ease-out; }
+  @keyframes slideUp {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* --- 4. Switch & Chat Widget --- */
+  .switch { position: relative; display: inline-block; width: 34px; height: 20px; }
+  .switch input { opacity: 0; width: 0; height: 0; }
+  .slider { 
+    position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; 
+    background-color: #333; transition: .4s; border-radius: 20px; 
+  }
+  .slider:before { 
+    position: absolute; content: ""; height: 14px; width: 14px; left: 3px; bottom: 3px; 
+    background-color: white; transition: .4s; border-radius: 50%; 
+  }
+  input:checked + .slider { background-color: var(--accent-red); }
+  input:checked + .slider:before { transform: translateX(14px); }
+  
+  #chat-messages { scroll-behavior: smooth; }
+  
+  .online-pulse { animation: pulse 2s infinite; }
+  @keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7); }
+    70% { box-shadow: 0 0 0 6px rgba(34, 197, 94, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); }
+  }
+
+  /* --- 5. Responsive --- */
+  @media (max-width: 640px) {
+    #chat-widget { 
+      width: calc(100% - 2rem) !important; 
+      right: 1rem !important; 
+      bottom: 1rem !important;
+      max-height: 80vh;
     }
-
-    .animate-marquee {
-      display: flex;
-      width: max-content;
-      animation: marquee 40s linear infinite;
+    #lang-popup {
+      width: calc(100vw - 2rem) !important;
+      left: 1rem !important;
     }
-
-    .animate-marquee:hover {
-      animation-play-state: paused;
-    }
-
-    :root {
-  --bg-color: #121212;
-  --text-color: #f5f5f5;
-  --btn-bg: #333333;
-}
-
-body.dark-mode {
---bg-color: #ffffff;
-  --text-color: #1a1a1a;
-  --btn-bg: #eeeeee;
-}
-
-/* --- 2. Page Styles --- */
-body {
-  background-color: var(--bg-color);
-  color: var(--text-color);
-  transition: background 0.3s ease;
-  height: 100vh;
-  margin: 0;
-}
-
-/* --- 3. The Toggle Button & Icon Logic --- */
-.theme-btn {
-  color: var(--text-color);
-  border: none;
-  padding: 12px;
-  border-radius: 50%;
-  cursor: pointer;
-  font-size: 1.5rem;
-  width: 50px;
-  height: 50px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.3s ease;
-}
-
-/* Hide the Sun icon by default (Light Mode) */
-.icon-dark-mode {
-  display: none;
-}
-
-/* When Body has .dark-mode, hide the Moon and show the Sun */
-body.dark-mode .icon-light-mode {
-  display: none;
-}
-
-body.dark-mode .icon-dark-mode {
-  display: block;
-}
-
-.besley{
-  font-family: "Besley", serif;
-  font-optical-sizing: auto;
-  font-weight: weight;
-  font-style: normal;
-}
-
-.cta-bg {
-            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), 
-            url('https://images.unsplash.com/photo-1485827404703-89b55fcc595e?auto=format&fit=crop&q=80&w=2070');
-            background-size: cover;
-            background-position: center;
-        }
-
-        .lang-scroll::-webkit-scrollbar { width: 5px; }
-        .lang-scroll::-webkit-scrollbar-track { background: transparent; }
-        .lang-scroll::-webkit-scrollbar-thumb { background: #e5e7eb; border-radius: 10px; }
-        
-        .slide-up { animation: slideUp 0.2s ease-out; }
-        @keyframes slideUp {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .switch { position: relative; display: inline-block; width: 34px; height: 20px; }
-        .switch input { opacity: 0; width: 0; height: 0; }
-        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ccc; transition: .4s; border-radius: 20px; }
-        .slider:before { position: absolute; content: ""; height: 14px; width: 14px; left: 3px; bottom: 3px; background-color: white; transition: .4s; border-radius: 50%; }
-        input:checked + .slider { background-color: #c2362c; }
-        input:checked + .slider:before { transform: translateX(14px); }
-        
-        #chat-messages { scroll-behavior: smooth; }
-        
-        .online-pulse { animation: pulse 2s infinite; }
-        @keyframes pulse {
-            0% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7); }
-            70% { box-shadow: 0 0 0 6px rgba(34, 197, 94, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); }
-        }
-
-        /* Responsive height adjustments */
-        @media (max-width: 640px) {
-            #chat-widget { 
-                width: calc(100% - 2rem) !important; 
-                right: 1rem !important; 
-                bottom: 1rem !important;
-                max-height: 80vh;
-            }
-            #lang-popup {
-                width: calc(100vw - 2rem) !important;
-                left: 1rem !important;
-            }
-        }
-  </style>
+  }
+</style>
 </head>
 <body>
 
 <header class="w-full font-sans">
-  <nav class="fixed lg:static top-0 left-0 w-full z-50 flex items-center justify-between px-4 md:px-12 py-4 border-b border-zinc-200 dark:border-zinc-800 bg-white/90 dark:bg-black/90 lg:bg-white dark:lg:bg-black backdrop-blur-md lg:backdrop-blur-none transition-all duration-300">
+<header class="relative">
+  <nav id="main-nav" class="fixed lg:static top-0 left-0 w-full z-50 flex items-center justify-between px-4 md:px-12 py-4 border-b border-zinc-200 dark:border-zinc-800 bg-white/90 dark:bg-black/90 lg:bg-black dark:lg:bg-black backdrop-blur-md lg:backdrop-blur-none transition-all duration-300 max-lg:bg-black/90 max-lg:border-zinc-800">
   
     <div class="flex items-center group cursor-pointer">
       <div class="flex-shrink-0 relative">
@@ -164,7 +139,7 @@ body.dark-mode .icon-dark-mode {
         <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-red-600 transition-all group-hover:w-full"></span>
       </a>
       <a href="#plans-section" class="relative text-sm font-bold text-zinc-800 dark:text-zinc-200 hover:text-red-600 transition-colors group">
-       Plans
+        Plans
         <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-red-600 transition-all group-hover:w-full"></span>
       </a>
       <a href="FAQs.html" class="relative text-sm font-bold text-zinc-800 dark:text-zinc-200 hover:text-red-600 transition-colors group">
@@ -177,56 +152,32 @@ body.dark-mode .icon-dark-mode {
       </a>
     </div>
 
-    <div class="flex items-center space-x-3 md:space-x-5">
-      <button id="theme-toggle" class="hidden lg:flex p-2 text-zinc-500 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-lg transition-all items-center justify-center">
-          <svg class="w-5 h-5 hidden dark:block" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"></path></svg>
-          <svg class="w-5 h-5 dark:hidden" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
-      </button>
-
+    <div class="flex items-center space-x-2 sm:space-x-3 md:space-x-5">
       <div class="hidden sm:flex items-center space-x-3 besley">
-          <button class="group flex items-center space-x-2 border border-red-600 px-5 py-2 rounded text-xs font-black uppercase tracking-widest text-red-600 dark:text-white hover:bg-red-600 hover:text-white transition-all">
-              <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path></svg>
-              <a href="login.html">Login</a>
-          </button>
-          <button class="group flex items-center space-x-2 bg-red-600 px-5 py-2.5 rounded text-xs font-black uppercase tracking-widest text-white hover:bg-red-700 shadow-[0_0_15px_rgba(220,38,38,0.4)] transition-all active:scale-95">
-              <a href="sign-up.html">Sign-up</a>
-              <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"></path></svg>
-          </button>
+          <a href="login.html" class="group flex items-center space-x-2 border border-red-600 px-5 py-2 rounded text-xs font-black uppercase tracking-widest text-red-600 dark:text-white hover:bg-red-600 hover:text-white transition-all">Login</a>
+          <a href="sign-up.html" class="group flex items-center space-x-2 bg-red-600 px-5 py-2.5 rounded text-xs font-black uppercase tracking-widest text-white hover:bg-red-700 shadow-lg transition-all active:scale-95">Sign-up</a>
       </div>
 
-      <button id="mobile-menu-btn" class="lg:hidden p-2 text-white bg-red-600 rounded-lg shadow-lg">
+      <button id="mobile-menu-btn" class="lg:hidden p-2 text-white bg-red-600 rounded-lg shadow-lg active:scale-90 transition-transform">
         <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
       </button>
     </div>
   </nav>
-</header>
 
-<div class="pt-20 lg:pt-0">
+  <div id="mobile-menu" class="hidden fixed top-[72px] left-0 w-full h-auto bg-black border-b border-zinc-800 px-6 py-8 space-y-6 besley z-40 lg:hidden text-white shadow-2xl">
+    <div class="flex flex-col space-y-4">
+      <a href="index.html" class="text-lg font-medium hover:text-red-500 transition-colors">Home</a>
+      <a href="About.html" class="text-lg font-medium hover:text-red-500 transition-colors">About Us</a>
+      <a href="#plans-section" class="text-lg font-medium hover:text-red-500 transition-colors">Plans</a>
+      <a href="FAQs.html" class="text-lg font-medium hover:text-red-500 transition-colors">FAQs</a>
+      <a href="contact.html" class="text-lg font-medium hover:text-red-500 transition-colors">Contact</a>
+    </div>
+    <div class="pt-4 flex flex-col space-y-3">
+      <a href="login.html" class="w-full py-4 text-center border border-red-600 rounded-xl font-bold uppercase tracking-widest">Login</a>
+      <a href="sign-up.html" class="w-full py-4 text-center bg-red-600 rounded-xl font-bold uppercase tracking-widest">Sign-up</a>
+    </div>
   </div>
-
-<div id="mobile-menu" class="hidden fixed top-[72px] left-0 w-full h-auto bg-white dark:bg-black border-b border-gray-800 px-6 py-6 space-y-6 besley z-40 lg:hidden">
-    <div class="space-y-4">
-        <a href="index.html" class="block text-lg hover:text-red-600 transition-colors">Home</a>
-        <a href="About.html" class="block text-lg hover:text-red-600 transition-colors">About Us</a>
-        <a href="#plans-section" class="block text-lg hover:text-red-600 transition-colors">Plans</a>
-        <a href="FAQs.html" class="block text-lg hover:text-red-600 transition-colors">FAQs</a>
-        <a href="contact.html" class="block text-lg hover:text-red-600 transition-colors">Contact</a>
-    </div>
-
-    <hr class="border-gray-200 dark:border-gray-800">
-
-    <div class="flex flex-col space-y-3">
-        <button class="flex items-center justify-center space-x-2 border border-red-600 w-full py-3 rounded text-sm font-semibold hover:bg-red-600/10 transition">
-            <a href="login.html">Login</a>
-        </button>
-        <button class="flex items-center justify-center space-x-2 bg-red-600 text-white w-full py-3 rounded text-sm font-semibold hover:bg-red-700 transition shadow-lg">
-            <a href="sing-up.html">Sign-up</a>
-        </button>
-    </div>
-</div>
-
 </header>
-            
 
   <div class="w-full bg-[#111111] border-b border-gray-800 overflow-hidden py-2.5 font-sans">
   <div class="animate-marquee">
@@ -1003,37 +954,16 @@ body.dark-mode .icon-dark-mode {
 </body>
 
   <script type="text/javascript">
-
+  // --- Mobile Menu Logic ---
   const mobileMenuBtn = document.getElementById('mobile-menu-btn');
   const mobileMenu = document.getElementById('mobile-menu');
 
   mobileMenuBtn.addEventListener('click', () => {
-       mobileMenu.classList.toggle('hidden');
+    mobileMenu.classList.toggle('hidden');
   });
 
-
-  const themeBtn = document.getElementById('theme-toggle');
-const currentTheme = localStorage.getItem('theme');
-
-// 1. Check if user has a saved preference
-if (currentTheme === 'dark') {
-  document.body.classList.add('dark-mode');
-}
-
-// 2. Add click event listener
-themeBtn.addEventListener('click', () => {
-  // Toggle the class
-  document.body.classList.toggle('dark-mode');
-  
-  // Save the preference to LocalStorage
-  let theme = 'dark';
-  if (document.body.classList.contains('dark-mode')) {
-    theme = 'light';
-  }
-  localStorage.setItem('theme', theme);
-});
-
- const cryptoInput = document.getElementById('crypto-input');
+  // --- Crypto Calculator Logic ---
+  const cryptoInput = document.getElementById('crypto-input');
   const cryptoSelect = document.getElementById('crypto-select');
   const fiatSelect = document.getElementById('fiat-select');
   const valOutput = document.getElementById('val-output');
@@ -1056,7 +986,6 @@ themeBtn.addEventListener('click', () => {
     const fiat = fiatSelect.value;
     const amount = parseFloat(cryptoInput.value) || 0;
     
-    // Convert crypto to USD then to target fiat
     const priceInUSD = baseRates[crypto];
     const finalValue = amount * priceInUSD * fiatMultipliers[fiat];
 
@@ -1077,144 +1006,126 @@ themeBtn.addEventListener('click', () => {
   [cryptoInput, cryptoSelect, fiatSelect].forEach(el => el.addEventListener('input', calculate));
   calculate();
 
-   window.addEventListener('load', () => {
-        const notification = document.getElementById('refresh-notification');
-        
-        // List of names and cities to make it look dynamic on refresh
-        const names = ["Lorn", "Sarah", "James", "Elena", "Marcus"];
-        const cities = ["St. Louis", "Chicago", "London", "Berlin", "Sydney"];
-        const amounts = ["3513", "2480", "5120", "1950", "4300"];
-
-        // Randomize the content
-        const randomIdx = Math.floor(Math.random() * names.length);
-        document.getElementById('notif-name').innerText = names[randomIdx];
-        document.getElementById('notif-city').innerText = cities[randomIdx];
-        document.getElementById('notif-amount').innerText = amounts[randomIdx];
-
-        // Slide the notification in after 1 second
-        setTimeout(() => {
-            notification.style.left = '24px'; // Slides into view
-        }, 1000);
-
-        // Auto-hide after 6 seconds
-        setTimeout(() => {
-            hideNotification();
-        }, 7000);
-    });
-
-    function hideNotification() {
-        const notification = document.getElementById('refresh-notification');
-        notification.style.left = '-400px';
-    }
+  // --- Notification Logic ---
+  window.addEventListener('load', () => {
+    const notification = document.getElementById('refresh-notification');
     
-    const chatMessages = document.getElementById('chat-messages');
-    const chatInput = document.getElementById('chat-input');
-    const chatWidget = document.getElementById('chat-widget');
-    const chatLauncher = document.getElementById('chat-launcher');
-    const smileIcon = document.getElementById('smile-icon');
-    const sendBtn = document.getElementById('send-btn');
-    const optionsMenu = document.getElementById('options-menu');
-    const popup = document.getElementById('lang-popup');
-    const searchInput = document.getElementById('lang-search');
+    const names = ["Lorn", "Sarah", "James", "Elena", "Marcus"];
+    const cities = ["St. Louis", "Chicago", "London", "Berlin", "Sydney"];
+    const amounts = ["3513", "2480", "5120", "1950", "4300"];
 
-    // Chat Logic
-    function openChat() { 
-        chatWidget.style.display = 'block'; 
-        chatLauncher.style.visibility = 'hidden'; 
+    const randomIdx = Math.floor(Math.random() * names.length);
+    document.getElementById('notif-name').innerText = names[randomIdx];
+    document.getElementById('notif-city').innerText = cities[randomIdx];
+    document.getElementById('notif-amount').innerText = amounts[randomIdx];
+
+    setTimeout(() => {
+      notification.style.left = '24px';
+    }, 1000);
+
+    setTimeout(() => {
+      hideNotification();
+    }, 7000);
+  });
+
+  function hideNotification() {
+    const notification = document.getElementById('refresh-notification');
+    notification.style.left = '-400px';
+  }
+  
+  // --- Chat Widget Logic ---
+  const chatMessages = document.getElementById('chat-messages');
+  const chatInput = document.getElementById('chat-input');
+  const chatWidget = document.getElementById('chat-widget');
+  const chatLauncher = document.getElementById('chat-launcher');
+  const smileIcon = document.getElementById('smile-icon');
+  const sendBtn = document.getElementById('send-btn');
+  const optionsMenu = document.getElementById('options-menu');
+  const popup = document.getElementById('lang-popup');
+  const searchInput = document.getElementById('lang-search');
+
+  function openChat() { 
+    chatWidget.style.display = 'block'; 
+    chatLauncher.style.visibility = 'hidden'; 
+  }
+  function closeChat() { 
+    chatWidget.style.display = 'none'; 
+    chatLauncher.style.visibility = 'visible'; 
+  }
+  function toggleOptions() { optionsMenu.classList.toggle('hidden'); }
+  
+  function sendMessage() {
+    const text = chatInput.value.trim();
+    if (text === "") return;
+
+    const userHtml = `<div class="flex flex-col items-end"><div class="bg-[#c2362c] text-white p-3 rounded-xl rounded-br-none text-xs sm:text-sm max-w-[85%] shadow-sm">${text}</div><span class="text-[9px] text-zinc-400 mt-1 mr-1 uppercase font-semibold">Just now</span></div>`;
+    chatMessages.insertAdjacentHTML('beforeend', userHtml);
+    chatInput.value = "";
+    chatInput.dispatchEvent(new Event('input'));
+
+    setTimeout(() => {
+      const botHtml = `<div class="flex gap-2 items-end"><div class="w-7 h-7 bg-zinc-200 rounded-full flex-shrink-0 flex items-center justify-center text-[10px]"><i class="fa-solid fa-robot text-zinc-500"></i></div><div class="flex flex-col w-[85%]"><div class="bg-zinc-200 text-zinc-800 p-3 rounded-xl rounded-bl-none text-xs sm:text-sm shadow-sm border border-zinc-100"><p class="mb-2">We’re busy right now. Leave your email and we'll contact you.</p><div class="flex flex-col gap-2 mt-2"><input type="email" placeholder="Email address" class="w-full p-2.5 border border-zinc-300 rounded text-xs outline-none focus:border-[#c2362c]"><button onclick="this.parentElement.innerHTML='<span class=\'text-green-600 font-bold\'>✓ Received!</span>'" class="bg-[#c2362c] text-white py-2 rounded font-bold text-[10px] uppercase">Send</button></div></div><span class="text-[9px] text-zinc-400 mt-1 ml-1 uppercase font-semibold">Just now</span></div></div>`;
+      chatMessages.insertAdjacentHTML('beforeend', botHtml);
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+    }, 600);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+  }
+
+  chatInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') sendMessage(); });
+  chatInput.addEventListener('input', function() {
+    if (this.value.trim().length > 0) {
+      smileIcon.classList.add('hidden');
+      sendBtn.classList.remove('hidden');
+    } else {
+      smileIcon.classList.remove('hidden');
+      sendBtn.classList.add('hidden');
     }
-    function closeChat() { 
-        chatWidget.style.display = 'none'; 
-        chatLauncher.style.visibility = 'visible'; 
+  });
+
+  // --- Language Selection Logic ---
+  function toggleLang() {
+    const isHidden = popup.classList.toggle('hidden');
+    if(!isHidden) {
+      searchInput.value = '';
+      filterLanguages(); 
+      searchInput.focus();
     }
-    function toggleOptions() { optionsMenu.classList.toggle('hidden'); }
-    
-    function sendMessage() {
-        const text = chatInput.value.trim();
-        if (text === "") return;
+  }
 
-        const userHtml = `<div class="flex flex-col items-end"><div class="bg-[#c2362c] text-white p-3 rounded-xl rounded-br-none text-xs sm:text-sm max-w-[85%] shadow-sm">${text}</div><span class="text-[9px] text-zinc-400 mt-1 mr-1 uppercase font-semibold">Just now</span></div>`;
-        chatMessages.insertAdjacentHTML('beforeend', userHtml);
-        chatInput.value = "";
-        chatInput.dispatchEvent(new Event('input'));
-
-        setTimeout(() => {
-            const botHtml = `<div class="flex gap-2 items-end"><div class="w-7 h-7 bg-zinc-200 rounded-full flex-shrink-0 flex items-center justify-center text-[10px]"><i class="fa-solid fa-robot text-zinc-500"></i></div><div class="flex flex-col w-[85%]"><div class="bg-zinc-200 text-zinc-800 p-3 rounded-xl rounded-bl-none text-xs sm:text-sm shadow-sm border border-zinc-100"><p class="mb-2">We’re busy right now. Leave your email and we'll contact you.</p><div class="flex flex-col gap-2 mt-2"><input type="email" placeholder="Email address" class="w-full p-2.5 border border-zinc-300 rounded text-xs outline-none focus:border-[#c2362c]"><button onclick="this.parentElement.innerHTML='<span class=\'text-green-600 font-bold\'>✓ Received!</span>'" class="bg-[#c2362c] text-white py-2 rounded font-bold text-[10px] uppercase">Send</button></div></div><span class="text-[9px] text-zinc-400 mt-1 ml-1 uppercase font-semibold">Just now</span></div></div>`;
-            chatMessages.insertAdjacentHTML('beforeend', botHtml);
-            chatMessages.scrollTop = chatMessages.scrollHeight;
-        }, 600);
-        chatMessages.scrollTop = chatMessages.scrollHeight;
+  document.addEventListener('click', (e) => {
+    if (popup && !e.target.closest('#lang-popup') && !e.target.closest('[onclick*="toggleLang"]')) {
+      popup.classList.add('hidden');
     }
+  });
 
-    chatInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') sendMessage(); });
-    chatInput.addEventListener('input', function() {
-        if (this.value.trim().length > 0) {
-            smileIcon.classList.add('hidden');
-            sendBtn.classList.remove('hidden');
-        } else {
-            smileIcon.classList.remove('hidden');
-            sendBtn.classList.add('hidden');
-        }
-    });
-
-   // Language Logic
-    function toggleLang() {
-        const isHidden = popup.classList.toggle('hidden');
-        if(!isHidden) {
-            searchInput.value = '';
-            filterItems(''); 
-            searchInput.focus();
-        }
-    }
-
-    document.addEventListener('click', (e) => {
-        if (!e.target.closest('.fixed')) {
-            popup.classList.add('hidden');
-        }
-    });
-
-   function toggleLangMenu(e) {
+  function toggleLangMenu(e) {
     e.stopPropagation();
-    const popup = document.getElementById('lang-popup');
-    popup.classList.toggle('hidden');
-}
+    document.getElementById('lang-popup').classList.toggle('hidden');
+  }
 
-function selectLang(e, countryCode, langCode) {
-    // 1. Prevent click from closing/opening other things
+  function selectLang(e, countryCode, langCode) {
     e.stopPropagation();
-
-    // 2. Update the Main Button UI (Flag and Label)
     const currentFlag = document.getElementById('current-flag');
     const currentLabel = document.getElementById('current-label');
     
     if (currentFlag) currentFlag.className = `fi fi-${countryCode} text-lg shadow-sm`;
     if (currentLabel) currentLabel.innerText = langCode;
 
-    // 3. Close the menu
     document.getElementById('lang-popup').classList.add('hidden');
-
-    // 4. SITE TRANSLATION LOGIC
-    // Option A: If you use folders (e.g., mysite.com/es/)
-    // window.location.href = `/${langCode.toLowerCase()}/` + window.location.search;
-
-    // Option B: If you use Google Translate or a script
     console.log(`Switching site language to: ${langCode}`);
-    
-    // Alert for demo purposes
-    // alert("Site language would now change to " + langCode);
-}
-function filterLanguages() {
+  }
+
+  function filterLanguages() {
     let input = document.getElementById('lang-search').value.toLowerCase();
     let items = document.getElementsByClassName('lang-item');
     
     for (let i = 0; i < items.length; i++) {
-        if (items[i].innerText.toLowerCase().includes(input)) {
-            items[i].style.display = "";
-        } else {
-            items[i].style.display = "none";
-        }
+      if (items[i].innerText.toLowerCase().includes(input)) {
+        items[i].style.display = "";
+      } else {
+        items[i].style.display = "none";
+      }
     }
-}
-
-  </script>
-
+  }
+</script>
 </html>

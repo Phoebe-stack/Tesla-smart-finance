@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Besley:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.0.2/css/flag-icons.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <title></title>
+  <style>
+    .besley { font-family: 'Besley', serif; }
+
+    .lang-scroll::-webkit-scrollbar { width: 5px; }
+        .lang-scroll::-webkit-scrollbar-track { background: transparent; }
+        .lang-scroll::-webkit-scrollbar-thumb { background: #e5e7eb; border-radius: 10px; }
+        
+        .slide-up { animation: slideUp 0.2s ease-out; }
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .switch { position: relative; display: inline-block; width: 34px; height: 20px; }
+        .switch input { opacity: 0; width: 0; height: 0; }
+        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ccc; transition: .4s; border-radius: 20px; }
+        .slider:before { position: absolute; content: ""; height: 14px; width: 14px; left: 3px; bottom: 3px; background-color: white; transition: .4s; border-radius: 50%; }
+        input:checked + .slider { background-color: #c2362c; }
+        input:checked + .slider:before { transform: translateX(14px); }
+        
+        #chat-messages { scroll-behavior: smooth; }
+        
+        .online-pulse { animation: pulse 2s infinite; }
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7); }
+            70% { box-shadow: 0 0 0 6px rgba(34, 197, 94, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); }
+        }
+
+        /* Responsive height adjustments */
+        @media (max-width: 640px) {
+            #chat-widget { 
+                width: calc(100% - 2rem) !important; 
+                right: 1rem !important; 
+                bottom: 1rem !important;
+                max-height: 80vh;
+            }
+            #lang-popup {
+                width: calc(100vw - 2rem) !important;
+                left: 1rem !important;
+            }
+        }
+  </style>
+</head>
+<body class="bg-black">
+
+
+  <section>
+    <div class="flex flex-col md:flex-row w-full items-center">
+      
+      <div class="hidden md:block md:w-[25%] relative">
+        <img src="img/images (1).jpg" alt="Description 1" class="w-full block h-auto">
+      </div>
+
+      <div class="w-full md:w-[50%] relative group">
+        <img src="img/images (1).jpg" alt="Description 2" class="w-full block h-auto">
+        <div class="absolute inset-0 bg-black/20"></div>
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-red-600 font-bold uppercase whitespace-nowrap text-2xl md:text-5xl pointer-events-none">
+          Contact <span class="text-white">Us</span>
+        </div>
+      </div>
+
+      <div class="hidden md:block md:w-[25%] relative">
+        <img src="img/images (1).jpg" alt="Description 3" class="w-full block h-auto">
+      </div>
+      
+    </div>
+  </section>
+
+  <section class="bg-black py-12 px-6 border-b border-zinc-900">
+    <div class="max-w-4xl mx-auto text-center">
+      <p class="text-zinc-400 text-sm md:text-base leading-relaxed besley italic">
+        Want to consult about our services or having any troubles? Just chat us on live or leave an email about your queries to get instant solution. Our support team is always glad to resolve your queries as soon as they can.
+      </p>
+    </div>
+  </section>
+
+  <section class="w-full max-w-4xl mx-auto my-4 mb-24">
+    <h2 class="text-white text-4xl font-bold text-center mb-8">Leave A Message</h2>
+    
+    <form id="contactForm" class="space-y-3">
+      <input type="text" id="name" placeholder="Name" 
+        class="w-full bg-transparent border border-zinc-800 p-4 text-zinc-300 placeholder-zinc-500 focus:outline-none focus:border-zinc-600 transition-colors">
+      
+      <input type="email" id="email" placeholder="Email" 
+        class="w-full bg-transparent border border-zinc-800 p-4 text-zinc-300 placeholder-zinc-500 focus:outline-none focus:border-zinc-600 transition-colors">
+      
+      <textarea id="message" placeholder="Message" rows="3" 
+        class="w-full bg-transparent border border-zinc-800 p-4 text-zinc-300 placeholder-zinc-500 focus:outline-none focus:border-zinc-600 transition-colors resize-none"></textarea>
+      
+      <button type="submit" 
+        class="w-full bg-[#c2362c] hover:bg-[#a12d25] text-white font-bold py-4 transition-colors uppercase tracking-wider">
+        Send
+      </button>
+    </form>
+
+    <div id="statusMessage" class="mt-4 text-sm font-medium hidden">
+      <p id="successText" class="text-zinc-500 flex items-center gap-2">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+        </svg>
+        The form was sent successfully.
+      </p>
+      <p id="errorText" class="text-red-500 hidden">
+        Please fill in all fields correctly before sending.
+      </p>
+    </div>
+  </section>
+
+
+
+<section>
+    <div id="chat-widget" class="fixed bottom-4 right-4 z-50 w-[320px] sm:w-[350px] font-sans shadow-2xl rounded-lg overflow-hidden hidden border border-zinc-200 bg-white slide-up">
+        <div id="options-menu" class="absolute inset-0 z-[60] bg-white hidden flex flex-col">
+            <div class="flex justify-between items-center p-4 border-b border-zinc-50">
+                <h3 class="font-bold text-zinc-800 text-lg">Options</h3>
+                <button onclick="toggleOptions()" class="p-2 text-zinc-400 hover:text-zinc-600">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+            <div class="p-4 flex flex-col gap-5">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                        <div class="w-8 h-8 rounded-full bg-[#c2362c] flex items-center justify-center text-white">
+                            <i class="fa-solid fa-bell"></i>
+                        </div>
+                        <span class="text-sm text-zinc-700">Play sounds</span>
+                    </div>
+                    <label class="switch">
+                        <input type="checkbox" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+            </div>
+            <div class="mt-auto p-4 text-center">
+                <span class="text-[10px] text-zinc-300 uppercase">Powered by Smartsupp</span>
+            </div>
+        </div>
+
+        <div class="bg-[#c2362c] p-4 text-white">
+            <div class="flex justify-between items-start mb-2">
+                <button onclick="closeChat()" class="hover:bg-white/10 p-1 px-2 rounded transition-colors">
+                    <i class="fa-solid fa-xmark text-sm"></i>
+                </button>
+                <div class="flex gap-3 text-sm">
+                    <i class="fa-solid fa-ellipsis-vertical cursor-pointer p-1" onclick="toggleOptions()"></i>
+                    <i class="fa-solid fa-chevron-down cursor-pointer p-1" onclick="closeChat()"></i>
+                </div>
+            </div>
+            <div class="flex items-center gap-3">
+                <!-- <div class="w-10 h-10 bg-white rounded-full flex-shrink-0 flex items-center justify-center text-[#c2362c] text-xl font-bold">T</div> -->
+                <img src="img/logo/tesla-icon.jpg" class="rounded-full w-10 h-10">
+                <div class="leading-tight">
+                    <h3 class="font-bold text-sm sm:text-base">How can we help?</h3>
+                    <div class="flex items-center gap-1.5 text-[11px] opacity-90">
+                        <span class="w-2 h-2 bg-green-400 rounded-full"></span>
+                        We reply immediately
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="chat-messages" class="h-[300px] sm:h-[350px] p-4 flex flex-col gap-4 overflow-y-auto bg-zinc-50 lang-scroll">
+            <div class="flex gap-2 items-end">
+                <div class="w-7 h-7 bg-zinc-200 rounded-full flex-shrink-0 flex items-center justify-center text-[10px]">
+                    <i class="fa-solid fa-robot text-zinc-500"></i>
+                </div>
+                <div class="flex flex-col">
+                    <div class="bg-zinc-200 text-zinc-800 p-3 rounded-xl rounded-bl-none text-xs sm:text-sm max-w-[90%] shadow-sm">
+                        Welcome to Tesla Assets Finance! 👋
+                    </div>
+                    <span class="text-[9px] text-zinc-400 mt-1 ml-1 uppercase font-semibold">Just now</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="border-t border-zinc-100 p-3 sm:p-4 bg-white">
+            <div class="relative flex items-center">
+                <input type="text" id="chat-input" placeholder="Type here..." 
+                    class="w-full bg-zinc-50 border border-zinc-200 rounded-full py-2.5 px-4 pr-10 text-xs sm:text-sm focus:ring-1 focus:ring-[#c2362c]/20 outline-none">
+                <div class="absolute right-3 top-1/2 -translate-y-1/2 flex items-center">
+                    <i id="smile-icon" onclick="toggleEmojiPanel()" class="fa-regular fa-face-smile text-lg text-zinc-400 cursor-pointer hover:text-zinc-600"></i>
+                    <button id="send-btn" onclick="sendMessage()" class="hidden text-[#c2362c] hover:text-[#a12d25] transition-colors">
+                        <i class="fa-solid fa-paper-plane text-lg"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div onclick="openChat()" id="chat-launcher" class="fixed bottom-4 right-4 z-[40] cursor-pointer flex items-center group">
+        <div class="bg-[#c2362c] text-white px-5 sm:px-6 py-2.5 rounded-full flex items-center gap-3 sm:gap-4 shadow-xl group-hover:bg-[#a12d25] transition-all relative">
+            <span class="font-medium text-base sm:text-lg">Chat</span>
+            <div class="w-7 h-7 sm:w-8 sm:h-8 bg-white/20 rounded-full flex items-center justify-center relative">
+                <i class="fa-solid fa-comment text-white text-base sm:text-lg"></i>
+                <div class="absolute -top-1.5 -right-1.5 bg-white text-[#c2362c] text-[10px] font-bold w-5 h-5 rounded-full flex items-center justify-center border-2 border-[#c2362c] shadow-sm">1</div>
+            </div>
+        </div>
+        <div class="absolute -bottom-0.5 -left-0.5 w-4 h-4 bg-green-500 border-2 border-white rounded-full online-pulse"></div>
+    </div>
+</section>
+
+<section>
+    <div class="fixed bottom-4 sm:bottom-6 left-4 sm:left-6 font-sans z-[100]" onclick="event.stopPropagation()">
+        
+        <div id="lang-popup" class="hidden absolute bottom-16 left-0 mb-2 w-[280px] sm:w-72 bg-white rounded-lg shadow-2xl border border-zinc-100 overflow-hidden">
+            
+            <div class="p-3 border-b border-zinc-100 bg-zinc-50/50">
+                <div class="relative flex items-center">
+                    <i class="fa-solid fa-magnifying-glass absolute left-3 text-zinc-400 text-xs"></i>
+                    <input type="text" id="lang-search" onkeyup="filterLanguages()" placeholder="Search countries..." 
+                        class="w-full text-sm pl-8 pr-3 py-2.5 outline-none border rounded-md bg-white border-zinc-200 focus:border-[#c2362c] transition-colors">
+                </div>
+            </div>
+
+            <div class="max-h-[300px] sm:max-h-[400px] overflow-y-auto p-1 lang-scroll" id="lang-list">
+                <div class="px-3 py-2 text-[10px] font-bold text-blue-600 uppercase tracking-wider">The Americas</div>
+                <button onclick="selectLang(event, 'us', 'EN')" class="lang-item w-full flex items-center gap-3 px-3 py-2.5 hover:bg-zinc-50 rounded transition-colors text-sm text-zinc-700">
+                    <span class="fi fi-us shadow-sm"></span> United States
+                </button>
+                <button onclick="selectLang(event, 'mx', 'ES')" class="lang-item w-full flex items-center gap-3 px-3 py-2.5 hover:bg-zinc-50 rounded transition-colors text-sm text-zinc-700">
+                    <span class="fi fi-mx shadow-sm"></span> Mexico
+                </button>
+
+                <div class="px-3 py-2 mt-2 text-[10px] font-bold text-[#c2362c] uppercase tracking-wider">Africa</div>
+                <button onclick="selectLang(event, 'ng', 'EN')" class="lang-item w-full flex items-center gap-3 px-3 py-2.5 hover:bg-zinc-50 rounded transition-colors text-sm text-zinc-700">
+                    <span class="fi fi-ng shadow-sm"></span> Nigeria
+                </button>
+                <button onclick="selectLang(event, 'za', 'EN')" class="lang-item w-full flex items-center gap-3 px-3 py-2.5 hover:bg-zinc-50 rounded transition-colors text-sm text-zinc-700">
+                    <span class="fi fi-za shadow-sm"></span> South Africa
+                </button>
+                </div>
+        </div>
+
+        <button onclick="toggleLangMenu(event)" class="flex items-center gap-2 bg-white px-3 py-2.5 rounded-md shadow-lg border border-zinc-200 hover:bg-zinc-50 transition-all active:scale-95 group">
+            <span id="current-flag" class="fi fi-us text-lg shadow-sm"></span>
+            <span id="current-label" class="font-bold text-zinc-800 text-sm">EN</span>
+            <i class="fa-solid fa-chevron-up text-[10px] text-zinc-400 group-hover:text-zinc-600 transition-colors"></i>
+        </button>
+    </div>
+</section>
+
+ <div id="refresh-notification" class="fixed bottom-28 left-[-400px] z-[200] flex items-center bg-white shadow-2xl rounded-sm overflow-hidden border border-zinc-100 transition-all duration-700 ease-out max-w-[320px] font-sans">
+    
+    <div class="bg-[#c2362c] p-4 flex items-center justify-center">
+        <div class="w-10 h-10 rounded-full border-2 border-white/20 flex items-center justify-center text-white">
+            <i class="fa-solid fa-comment-dollar text-xl"></i>
+        </div>
+    </div>
+
+    <div class="p-3 pr-6 bg-white">
+        <p class="text-zinc-800 text-sm leading-snug">
+            <span id="notif-name" class="font-medium">Lorn</span> from 
+            <span id="notif-city" class="font-medium">St. Louis</span> just earned 
+            <span class="text-[#c2362c] font-bold">$<span id="notif-amount">3513</span></span> 
+            5 minutes ago.
+        </p>
+    </div>
+
+    <button onclick="hideNotification()" class="absolute top-1 right-1 text-zinc-300 hover:text-zinc-500 transition-colors">
+        <i class="fa-solid fa-xmark text-[10px]"></i>
+    </button>
+</div>
+
+</body>
+<script type="text/javascript">
+	 const form = document.getElementById('contactForm');
+    const statusDiv = document.getElementById('statusMessage');
+    const successText = document.getElementById('successText');
+    const errorText = document.getElementById('errorText');
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const name = document.getElementById('name').value;
+      const email = document.getElementById('email').value;
+      const message = document.getElementById('message').value;
+
+      if (name && email.includes('@') && message) {
+        statusDiv.classList.remove('hidden');
+        successText.classList.remove('hidden');
+        errorText.classList.add('hidden');
+        form.reset();
+      } else {
+        statusDiv.classList.remove('hidden');
+        errorText.classList.remove('hidden');
+        successText.classList.add('hidden');
+      }
+    });
+
+     const chatMessages = document.getElementById('chat-messages');
+    const chatInput = document.getElementById('chat-input');
+    const chatWidget = document.getElementById('chat-widget');
+    const chatLauncher = document.getElementById('chat-launcher');
+    const smileIcon = document.getElementById('smile-icon');
+    const sendBtn = document.getElementById('send-btn');
+    const optionsMenu = document.getElementById('options-menu');
+    const popup = document.getElementById('lang-popup');
+    const searchInput = document.getElementById('lang-search');
+
+    // Chat Logic
+    function openChat() { 
+        chatWidget.style.display = 'block'; 
+        chatLauncher.style.visibility = 'hidden'; 
+    }
+    function closeChat() { 
+        chatWidget.style.display = 'none'; 
+        chatLauncher.style.visibility = 'visible'; 
+    }
+    function toggleOptions() { optionsMenu.classList.toggle('hidden'); }
+    
+    function sendMessage() {
+        const text = chatInput.value.trim();
+        if (text === "") return;
+
+        const userHtml = `<div class="flex flex-col items-end"><div class="bg-[#c2362c] text-white p-3 rounded-xl rounded-br-none text-xs sm:text-sm max-w-[85%] shadow-sm">${text}</div><span class="text-[9px] text-zinc-400 mt-1 mr-1 uppercase font-semibold">Just now</span></div>`;
+        chatMessages.insertAdjacentHTML('beforeend', userHtml);
+        chatInput.value = "";
+        chatInput.dispatchEvent(new Event('input'));
+
+        setTimeout(() => {
+            const botHtml = `<div class="flex gap-2 items-end"><div class="w-7 h-7 bg-zinc-200 rounded-full flex-shrink-0 flex items-center justify-center text-[10px]"><i class="fa-solid fa-robot text-zinc-500"></i></div><div class="flex flex-col w-[85%]"><div class="bg-zinc-200 text-zinc-800 p-3 rounded-xl rounded-bl-none text-xs sm:text-sm shadow-sm border border-zinc-100"><p class="mb-2">We’re busy right now. Leave your email and we'll contact you.</p><div class="flex flex-col gap-2 mt-2"><input type="email" placeholder="Email address" class="w-full p-2.5 border border-zinc-300 rounded text-xs outline-none focus:border-[#c2362c]"><button onclick="this.parentElement.innerHTML='<span class=\'text-green-600 font-bold\'>✓ Received!</span>'" class="bg-[#c2362c] text-white py-2 rounded font-bold text-[10px] uppercase">Send</button></div></div><span class="text-[9px] text-zinc-400 mt-1 ml-1 uppercase font-semibold">Just now</span></div></div>`;
+            chatMessages.insertAdjacentHTML('beforeend', botHtml);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }, 600);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+
+    chatInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') sendMessage(); });
+    chatInput.addEventListener('input', function() {
+        if (this.value.trim().length > 0) {
+            smileIcon.classList.add('hidden');
+            sendBtn.classList.remove('hidden');
+        } else {
+            smileIcon.classList.remove('hidden');
+            sendBtn.classList.add('hidden');
+        }
+    });
+
+    // Language Logic
+    function toggleLang() {
+        const isHidden = popup.classList.toggle('hidden');
+        if(!isHidden) {
+            searchInput.value = '';
+            filterItems(''); 
+            searchInput.focus();
+        }
+    }
+
+    document.addEventListener('click', (e) => {
+        if (!e.target.closest('.fixed')) {
+            popup.classList.add('hidden');
+        }
+    });
+
+   function toggleLangMenu(e) {
+    e.stopPropagation();
+    const popup = document.getElementById('lang-popup');
+    popup.classList.toggle('hidden');
+}
+
+function selectLang(e, countryCode, langCode) {
+    // 1. Prevent click from closing/opening other things
+    e.stopPropagation();
+
+    // 2. Update the Main Button UI (Flag and Label)
+    const currentFlag = document.getElementById('current-flag');
+    const currentLabel = document.getElementById('current-label');
+    
+    if (currentFlag) currentFlag.className = `fi fi-${countryCode} text-lg shadow-sm`;
+    if (currentLabel) currentLabel.innerText = langCode;
+
+    // 3. Close the menu
+    document.getElementById('lang-popup').classList.add('hidden');
+
+    // 4. SITE TRANSLATION LOGIC
+    // Option A: If you use folders (e.g., mysite.com/es/)
+    // window.location.href = `/${langCode.toLowerCase()}/` + window.location.search;
+
+    // Option B: If you use Google Translate or a script
+    console.log(`Switching site language to: ${langCode}`);
+    
+    // Alert for demo purposes
+    // alert("Site language would now change to " + langCode);
+}
+function filterLanguages() {
+    let input = document.getElementById('lang-search').value.toLowerCase();
+    let items = document.getElementsByClassName('lang-item');
+    
+    for (let i = 0; i < items.length; i++) {
+        if (items[i].innerText.toLowerCase().includes(input)) {
+            items[i].style.display = "";
+        } else {
+            items[i].style.display = "none";
+        }
+    }
+}
+
+
+    window.addEventListener('load', () => {
+        const notification = document.getElementById('refresh-notification');
+        
+        // List of names and cities to make it look dynamic on refresh
+        const names = ["Lorn", "Sarah", "James", "Elena", "Marcus"];
+        const cities = ["St. Louis", "Chicago", "London", "Berlin", "Sydney"];
+        const amounts = ["3513", "2480", "5120", "1950", "4300"];
+
+        // Randomize the content
+        const randomIdx = Math.floor(Math.random() * names.length);
+        document.getElementById('notif-name').innerText = names[randomIdx];
+        document.getElementById('notif-city').innerText = cities[randomIdx];
+        document.getElementById('notif-amount').innerText = amounts[randomIdx];
+
+        // Slide the notification in after 1 second
+        setTimeout(() => {
+            notification.style.left = '24px'; // Slides into view
+        }, 1000);
+
+        // Auto-hide after 6 seconds
+        setTimeout(() => {
+            hideNotification();
+        }, 7000);
+    });
+
+    function hideNotification() {
+        const notification = document.getElementById('refresh-notification');
+        notification.style.left = '-400px';
+    }
+</script>
+</html>

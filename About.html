@@ -1,0 +1,882 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Ultra&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Besley:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.0.2/css/flag-icons.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <title></title>
+  <script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    // This line tells Tailwind: "When you see .dark-mode, apply the dark: styles"
+    darkMode: ['selector', '.dark-mode'], 
+  }
+</script>
+  <style type="text/css">
+    @keyframes marquee {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); } /* Moves half the total width for a perfect loop */
+    }
+
+    .animate-marquee {
+      display: flex;
+      width: max-content;
+      animation: marquee 40s linear infinite;
+    }
+
+    .animate-marquee:hover {
+      animation-play-state: paused;
+    }
+
+    :root {
+  --bg-color: #ffffff;
+  --text-color: #1a1a1a;
+  --btn-bg: #eeeeee;
+}
+
+body.dark-mode {
+  --bg-color: #121212;
+  --text-color: #f5f5f5;
+  --btn-bg: #333333;
+}
+
+/* --- 2. Page Styles --- */
+body {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  transition: background 0.3s ease;
+  height: 100vh;
+  margin: 0;
+}
+
+/* --- 3. The Toggle Button & Icon Logic --- */
+.theme-btn {
+  background: ;
+  color: var(--text-color);
+  border: none;
+  padding: 12px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 1.5rem;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+/* Hide the Sun icon by default (Light Mode) */
+.icon-dark-mode {
+  display: none;
+}
+
+/* When Body has .dark-mode, hide the Moon and show the Sun */
+body.dark-mode .icon-light-mode {
+  display: none;
+}
+
+body.dark-mode .icon-dark-mode {
+  display: block;
+}
+
+.besley{
+  font-family: "Besley", serif;
+  font-optical-sizing: auto;
+  font-weight: weight;
+  font-style: normal;
+}
+
+.cta-bg {
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), 
+                        url('https://images.unsplash.com/photo-1485827404703-89b55fcc595e?auto=format&fit=crop&q=80&w=2070');
+            background-size: cover;
+            background-position: center;
+        }
+
+
+  .lang-scroll::-webkit-scrollbar { width: 5px; }
+        .lang-scroll::-webkit-scrollbar-track { background: transparent; }
+        .lang-scroll::-webkit-scrollbar-thumb { background: #e5e7eb; border-radius: 10px; }
+        
+        .slide-up { animation: slideUp 0.2s ease-out; }
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .switch { position: relative; display: inline-block; width: 34px; height: 20px; }
+        .switch input { opacity: 0; width: 0; height: 0; }
+        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ccc; transition: .4s; border-radius: 20px; }
+        .slider:before { position: absolute; content: ""; height: 14px; width: 14px; left: 3px; bottom: 3px; background-color: white; transition: .4s; border-radius: 50%; }
+        input:checked + .slider { background-color: #c2362c; }
+        input:checked + .slider:before { transform: translateX(14px); }
+        
+        #chat-messages { scroll-behavior: smooth; }
+        
+        .online-pulse { animation: pulse 2s infinite; }
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7); }
+            70% { box-shadow: 0 0 0 6px rgba(34, 197, 94, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); }
+        }
+
+        /* Responsive height adjustments */
+        @media (max-width: 640px) {
+            #chat-widget { 
+                width: calc(100% - 2rem) !important; 
+                right: 1rem !important; 
+                bottom: 1rem !important;
+                max-height: 80vh;
+            }
+            #lang-popup {
+                width: calc(100vw - 2rem) !important;
+                left: 1rem !important;
+            }
+        }
+  </style>
+</head>
+<body>
+
+<header class="w-full font-sans">
+  <nav class="fixed lg:static top-0 left-0 w-full z-50 flex items-center justify-between px-4 md:px-12 py-4 border-b border-zinc-200 dark:border-zinc-800 bg-white/90 dark:bg-black/90 lg:bg-white dark:lg:bg-black backdrop-blur-md lg:backdrop-blur-none transition-all duration-300">
+  
+    <div class="flex items-center group cursor-pointer">
+      <div class="flex-shrink-0 relative">
+        <div class="absolute inset-0 bg-red-600/20 blur-xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity"></div>
+        <img class="h-8 md:h-10 w-auto object-contain relative z-10" src="img/logo/tesla-logo.png" alt="Tesla Logo">
+      </div>
+    </div>
+
+    <div class="hidden lg:flex items-center space-x-10 besley">
+      <a href="index.html" class="relative text-sm font-bold text-zinc-800 dark:text-zinc-200 hover:text-red-600 transition-colors group">
+        Home
+        <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-red-600 transition-all group-hover:w-full"></span>
+      </a>
+      <a href="About.html" class="relative text-sm font-bold text-zinc-800 dark:text-zinc-200 hover:text-red-600 transition-colors group">
+        About Us
+        <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-red-600 transition-all group-hover:w-full"></span>
+      </a>
+      <a href="index.html#plans-section" class="relative text-sm font-bold text-zinc-800 dark:text-zinc-200 hover:text-red-600 transition-colors group">
+        Plans
+        <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-red-600 transition-all group-hover:w-full"></span>
+      </a>
+      <a href="FAQs.html" class="relative text-sm font-bold text-zinc-800 dark:text-zinc-200 hover:text-red-600 transition-colors group">
+        FAQs
+        <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-red-600 transition-all group-hover:w-full"></span>
+      </a>
+      <a href="contact.html" class="relative text-sm font-bold text-zinc-800 dark:text-zinc-200 hover:text-red-600 transition-colors group">
+        Contact
+        <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-red-600 transition-all group-hover:w-full"></span>
+      </a>
+    </div>
+
+    <div class="flex items-center space-x-3 md:space-x-5">
+      <button id="theme-toggle" class="hidden lg:flex p-2 text-zinc-500 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-lg transition-all items-center justify-center">
+          <svg class="w-5 h-5 hidden dark:block" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"></path></svg>
+          <svg class="w-5 h-5 dark:hidden" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+      </button>
+
+      <div class="hidden sm:flex items-center space-x-3 besley">
+          <button class="group flex items-center space-x-2 border border-red-600 px-5 py-2 rounded text-xs font-black uppercase tracking-widest text-red-600 dark:text-white hover:bg-red-600 hover:text-white transition-all">
+              <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path></svg>
+              <a href="login.html">Login</a>
+          </button>
+          <button class="group flex items-center space-x-2 bg-red-600 px-5 py-2.5 rounded text-xs font-black uppercase tracking-widest text-white hover:bg-red-700 shadow-[0_0_15px_rgba(220,38,38,0.4)] transition-all active:scale-95">
+              <a href="sign-up.html">Sign-up</a>
+              <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"></path></svg>
+          </button>
+      </div>
+
+      <button id="mobile-menu-btn" class="lg:hidden p-2 text-white bg-red-600 rounded-lg shadow-lg">
+        <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+      </button>
+    </div>
+  </nav>
+</header>
+
+<div class="pt-20 lg:pt-0">
+  </div>
+
+<div id="mobile-menu" class="hidden fixed top-[72px] left-0 w-full h-auto bg-white dark:bg-black border-b border-gray-800 px-6 py-6 space-y-6 besley z-40 lg:hidden">
+    <div class="space-y-4">
+        <a href="index.html" class="block text-lg hover:text-red-600 transition-colors">Home</a>
+        <a href="About.html" class="block text-lg hover:text-red-600 transition-colors">About Us</a>
+        <a href="index.html#plans-section" class="block text-lg hover:text-red-600 transition-colors">Plans</a>
+        <a href="FAQs.html" class="block text-lg hover:text-red-600 transition-colors">FAQs</a>
+        <a href="contact.html" class="block text-lg hover:text-red-600 transition-colors">Contact</a>
+    </div>
+
+    <hr class="border-gray-200 dark:border-gray-800">
+
+    <div class="flex flex-col space-y-3">
+        <button class="flex items-center justify-center space-x-2 border border-red-600 w-full py-3 rounded text-sm font-semibold hover:bg-red-600/10 transition">
+            <a href="login.html">Login</a>
+        </button>
+        <button class="flex items-center justify-center space-x-2 bg-red-600 text-white w-full py-3 rounded text-sm font-semibold hover:bg-red-700 transition shadow-lg">
+            <a href="sign-up.html">Sign-up</a>
+        </button>
+    </div>
+</div>
+
+</header>
+            
+
+  <div class="w-full bg-[#111111] border-b border-gray-800 overflow-hidden py-2.5 font-sans">
+  <div class="animate-marquee">
+    
+    <div class="flex items-center shrink-0">
+      
+      <div class="flex items-center px-6 border-r border-gray-700/50 space-x-3">
+        <div class="w-5 h-5 bg-[#3c3c3d] rounded-full flex items-center justify-center text-[10px] text-white">Ξ</div>
+        <span class="text-white font-bold text-[13px] tracking-wide">ETH/USD</span>
+        <span class="text-gray-300 font-medium text-[13px]">2,127.4</span>
+        <span class="text-[#10b981] font-medium text-[13px]">+53.50 (+2.58%)</span>
+      </div>
+
+      <div class="flex items-center space-x-2 border-r border-gray-700 pr-8">
+        <span class="bg-orange-500 text-white rounded-full w-4 h-4 flex items-center justify-center text-[10px]">₿</span>
+        <span class="text-gray-400 uppercase">BTC/USD</span>
+        <span>72,506</span>
+        <span class="text-emerald-500">+1,977.00 (+2.80%)</span>
+      </div>
+
+      <div class="flex items-center px-6 border-r border-gray-700/50 space-x-3">
+        <div class="w-5 h-5 bg-[#e91e63] rounded-full flex items-center justify-center text-[8px] text-white font-bold">500</div>
+        <span class="text-white font-bold text-[13px] tracking-wide">S&P 500</span>
+        <span class="text-[#2dd4bf] font-medium text-[13px]">6,695.6</span>
+        <span class="text-[#10b981] font-medium text-[13px]">+14.80 (+0.22%)</span>
+      </div>
+
+      <div class="flex items-center px-6 border-r border-gray-700/50 space-x-3">
+        <div class="w-5 h-5 bg-[#00bcd4] rounded-full flex items-center justify-center text-[8px] text-white font-bold">100</div>
+        <span class="text-white font-bold text-[13px] tracking-wide">NASDAQ 100</span>
+        <span class="text-[#2dd4bf] font-medium text-[13px]">24,621.9</span>
+        <span class="text-[#10b981] font-medium text-[13px]">+73.30 (+0.30%)</span>
+      </div>
+
+      <div class="flex items-center px-6 border-r border-gray-700/50 space-x-3">
+        <div class="w-5 h-5 bg-blue-800 rounded-full flex items-center justify-center text-[10px]">🇪🇺</div>
+        <span class="text-white font-bold text-[13px] tracking-wide">EUR/USD</span>
+        <span class="text-gray-300 font-medium text-[13px]">1.14701</span>
+        <span class="text-[#f43f5e] font-medium text-[13px]">-0.00 (-0.35%)</span>
+      </div>
+    </div>
+
+    <div class="flex items-center shrink-0">
+      <div class="flex items-center px-6 border-r border-gray-700/50 space-x-3">
+        <div class="w-5 h-5 bg-[#3c3c3d] rounded-full flex items-center justify-center text-[10px] text-white">Ξ</div>
+        <span class="text-white font-bold text-[13px] tracking-wide">ETH/USD</span>
+        <span class="text-gray-300 font-medium text-[13px]">2,127.4</span>
+        <span class="text-[#10b981] font-medium text-[13px]">+53.50 (+2.58%)</span>
+      </div>
+      </div>
+
+  </div>
+</div>
+
+<section class="relative h-[50vh] md:h-[60vh] flex items-center justify-center overflow-hidden bg-black">
+    <div class="absolute inset-0 z-0">
+        <img src="img/Tesla-robots.jpg" alt="About Tesla" class="w-full h-full object-contain opacity-60">
+        <div class="absolute inset-0 bg-gradient-to-b from-black/60 via-transparent to-black"></div>
+    </div>
+
+    <div class="relative z-10 text-center px-4">
+        <h1 class="besley text-4xl md:text-6xl font-bold tracking-tighter uppercase">
+            <span class="text-white">About</span> 
+            <span class="text-red-600">Us</span>
+        </h1>
+        <div class="w-20 h-1 bg-red-600 mx-auto mt-4 rounded-full"></div>
+    </div>
+</section>
+
+<section class="besley bg-zinc-50 dark:bg-[#111111] text-zinc-900 dark:text-white py-20 px-6 md:px-20 transition-colors">
+    <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+        <div>
+            <h2 class="text-zinc-900 dark:text-white text-xl md:text-3xl font-black uppercase tracking-tight leading-tight mb-6">
+                We Are <span class="text-red-600">Tesla Assets Finance</span>
+            </h2>
+            <p class="text-zinc-400 text-sm leading-relaxed mb-8">
+                For decades, the dominant players in forex have been the privileged, in-the-know few. But our platform is disrupting the entire industry and equipping prospective investors with the opportunity to actualize their investment dreams. Grow a trade account and make internet work for you, relieve you from 9-5 jobs the foriegn exchange market work for you 24/7 with our minimalist platform. We trade and ensure the coverage of transactions profitably in Forex, Commodities(stocks), and Indices etc. We manage losses and trading processes to meet up with the average required monthly quota ROI of your desired package and facilitation of the worldwide maket. Our elite trade development team and account managers are handpicked from the best and have over 7 years of experience, and have traded for several of the most reputable brokers. Join over 4000 investors from all over the world satisfied with our services.
+            </p>
+            
+             <div class="flex items-start space-x-4 group cursor-pointer" onclick="openModal()">
+                <div class="bg-red-600 p-3 rounded shadow-lg">
+                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
+                    </svg>
+                </div>
+                <div>
+                  <h4 class="font-bold text-sm text-white">Tesla Assets Finance, Certificate Of Incorporation</h4>
+                    <span class="text-red-600 text-xs font-bold uppercase tracking-widest group-hover:underline">Click To View</span>
+                </div>
+            </div>
+
+            <div id="imageModal" class="hidden fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
+    
+              <div class="relative max-w-2xl w-full bg-white rounded-lg shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-300">
+        
+                <button onclick="closeModal()" class="absolute top-4 right-4 z-10 p-2 bg-black/20 hover:bg-red-600 text-white rounded-full transition-colors">
+                  <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                  </svg>
+                </button>
+
+                <img src="img/tesla-C.png" alt="Tesla Assets Finance Certificate" class="w-full h-auto block">
+              </div>
+
+              <div class="absolute inset-0 -z-10" onclick="closeModal()"></div>
+          </div>
+        </div>
+
+        <div class="relative group w-full max-w-4xl mx-auto">
+    <div class="absolute -inset-1 bg-red-600/20 blur opacity-25 group-hover:opacity-50 transition duration-1000 group-hover:duration-200 rounded-xl"></div>
+    
+    <img src="img/elon2.jpeg" 
+         alt="Elon Musk" 
+         class="relative rounded-xl shadow-2xl transition duration-500 w-full object-cover object-top h-[250px] sm:h-[350px] lg:h-[450px]">
+</div>
+    </div>
+</section>
+
+<section class="bg-white dark:bg-[#111111] py-12 md:py-20 px-4 sm:px-6 md:px-12 transition-colors border-t border-zinc-200 dark:border-zinc-800">
+  <div class="max-w-7xl mx-auto px-4 sm:px-28 lg:px-8">
+    
+    <h2 class="text-zinc-900 dark:text-white text-2xl md:text-3xl lg:text-4xl font-black uppercase tracking-tight mb-10 md:mb-16 text-center lg:text-left">
+      Putting Our Clients First For Over A Decade.
+    </h2>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
+      
+      <div class="bg-zinc-100 dark:bg-zinc-900/50 p-6 md:p-8 rounded-xl border border-zinc-200 dark:border-zinc-800 hover:border-red-600/50 transition-all duration-300 group flex flex-col items-center lg:items-start text-center lg:text-left">
+        <div class="text-zinc-800 dark:text-white mb-6 group-hover:scale-110 transition-transform duration-300">
+          <svg class="w-10 h-10 md:w-12 md:h-12" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M19 5h-2V3H7v2H5c-1.1 0-2 .9-2 2v1c0 2.55 1.92 4.63 4.39 4.94A5.01 5.01 0 0011 15.9V19H7v2h10v-2h-4v-3.1a5.01 5.01 0 003.61-2.96C19.08 10.63 21 8.55 21 8V7c0-1.1-.9-2-2-2zM5 8V7h2v3.82C5.84 10.4 5 9.3 5 8zm14 0c0 1.3-.84 2.4-2 2.82V7h2v1z"/>
+          </svg>
+        </div>
+        <h3 class="text-red-600 font-bold text-xs md:text-sm uppercase tracking-widest mb-4">Winning Trading Strategy</h3>
+        <p class="text-zinc-600 dark:text-zinc-400 text-sm leading-relaxed">Trading strategies that really work — now they are yours.</p>
+      </div>
+
+      <div class="bg-zinc-100 dark:bg-zinc-900/50 p-6 md:p-8 rounded-xl border border-zinc-200 dark:border-zinc-800 hover:border-red-600/50 transition-all duration-300 group flex flex-col items-center lg:items-start text-center lg:text-left">
+        <div class="text-zinc-800 dark:text-white mb-6 group-hover:scale-110 transition-transform duration-300">
+          <svg class="w-10 h-10 md:w-12 md:h-12" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M3.5 18.49l6-6.01 4 4L22 6.92l-1.41-1.41-7.09 7.97-4-4L2 17.08l1.5 1.41z"/>
+          </svg>
+        </div>
+        <h3 class="text-red-600 font-bold text-xs md:text-sm uppercase tracking-widest mb-4">
+          High Leverage
+        </h3>
+        <p class="text-zinc-600 dark:text-zinc-400 text-sm leading-relaxed">
+          Chance to magnify your investment and really win big.
+        </p>
+      </div>
+
+      <div class="bg-zinc-100 dark:bg-zinc-900/50 p-6 md:p-8 rounded-xl border border-zinc-200 dark:border-zinc-800 hover:border-red-600/50 transition-all duration-300 group flex flex-col items-center lg:items-start text-center lg:text-left">
+        <div class="text-zinc-800 dark:text-white mb-6 group-hover:scale-110 transition-transform duration-300">
+          <svg class="w-10 h-10 md:w-12 md:h-12" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M7 2v11h3v9l7-12h-4l4-8z"/>
+          </svg>
+        </div>
+        <h3 class="text-red-600 font-bold text-xs md:text-sm uppercase tracking-widest mb-4">
+          Fast Execution
+        </h3>
+        <p class="text-zinc-600 dark:text-zinc-400 text-sm leading-relaxed">
+          Super-fast trading so you never suffer slippage.
+        </p>
+      </div>
+
+      <div class="bg-zinc-100 dark:bg-zinc-900/50 p-6 md:p-8 rounded-xl border border-zinc-200 dark:border-zinc-800 hover:border-red-600/50 transition-all duration-300 group flex flex-col items-center lg:items-start text-center lg:text-left">
+        <div class="text-zinc-800 dark:text-white mb-6 group-hover:scale-110 transition-transform duration-300">
+          <svg class="w-10 h-10 md:w-12 md:h-12" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M12.5 6.94l-2.06 2.06 4.83 4.83L12.5 16.59l-1.41-1.41 1.41-1.41-2-2-1.41 1.41-1.41-1.41 4.83-4.83 2-2zM12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/>
+          </svg>
+        </div>
+        <h3 class="text-red-600 font-bold text-xs md:text-sm uppercase tracking-widest mb-4">
+          Low Spreads
+        </h3>
+        <p class="text-zinc-600 dark:text-zinc-400 text-sm leading-relaxed">
+          Competitive pricing to ensure your margins stay high.
+        </p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section class="besley bg-zinc-50 dark:bg-black py-16 px-6 md:px-20 transition-colors">
+  <div class="max-w-7xl mx-auto flex flex-col lg:flex-row items-center gap-12">
+    
+    <div class="w-full lg:w-1/2">
+      <div class="relative w-full aspect-video rounded-lg overflow-hidden border-4 border-zinc-200 dark:border-zinc-900 shadow-2xl">
+        <iframe class="elementor-video" frameborder="0" allowfullscreen="" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" title="Where Did Bitcoin Come From? – The True Story" width="640" height="360" src="https://www.youtube.com/embed/W15A7Lf0_fI?controls=1&amp;rel=0&amp;playsinline=0&amp;modestbranding=0&amp;autoplay=0&amp;enablejsapi=1&amp;origin=https%3A%2F%2Fteslaassetsfinance.com&amp;widgetid=1&amp;forigin=https%3A%2F%2Fteslaassetsfinance.com%2Fabout-us%2F&amp;aoriginsup=1&amp;gporigin=https%3A%2F%2Fteslaassetsfinance.com%2F&amp;vf=1" id="widget2"></iframe>
+      </div>
+    </div>
+
+    <div class="w-full lg:w-1/2 text-left">
+      <h2 class="text-zinc-900 dark:text-white text-xl md:text-lg font-black uppercase tracking-tight leading-tight mb-6">
+        WHY ARE SO MANY PEOPLE INVESTING DIGITAL CURRENCIES LIKE BITCOIN?
+      </h2>
+      
+      <h3 class="text-zinc-700 dark:text-zinc-300 text-lg font-semibold mb-6">
+        200+ Reasons To Invest With Us
+      </h3>
+
+      <div class="space-y-6">
+        <p class="text-zinc-600 dark:text-zinc-400 text-sm leading-relaxed">
+          A team of professional Traders have applied more than 250 trading strategies in 
+          last 3 years and finally we are achieving optimum results,
+        </p>
+        
+        <p class="text-zinc-600 dark:text-zinc-400 text-sm leading-relaxed">
+          We are making maximum profit by applying several successfully tested strategies.
+        </p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+ <footer class="besley bg-zinc-100 dark:bg-[#111111] text-gray-800 dark:text-gray-400 py-12 md:py-16 px-6 border-t border-gray-200 dark:border-zinc-800 transition-colors duration-300">
+    <div class="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 md:gap-12 md:px-10 lg:px-20">
+        
+        <div class="flex flex-col items-start">
+            <div class="flex items-center space-x-2 mb-6">
+              <div class="flex-shrink-0 relative">
+                <div class="absolute inset-0 bg-red-600/20 blur-xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                  <img class="h-8 md:h-10 w-auto object-contain relative z-10" src="img/logo/tesla-logo.png" alt="Tesla Logo">
+                </div>
+            </div>
+            <p class="text-xs leading-relaxed max-w-xs sm:max-w-none">
+                Founded and managed by leading industry professionals, Tesla Assets Finance was established with a clear vision: To provide unrivaled trading solutions to investors from all over the world with a stellar client-centered culture.
+            </p>
+        </div>
+
+        <div class="sm:pl-4 lg:pl-0">
+            <h4 class="text-red-600 font-bold text-sm uppercase mb-4 md:mb-6 tracking-wider">Company</h4>
+            <ul class="space-y-3 text-xs">
+                <li><a href="#" class="hover:text-red-600 transition-colors inline-block">Home</a></li>
+                <li><a href="#" class="hover:text-red-600 transition-colors inline-block">About Us</a></li>
+                <li><a href="#" class="hover:text-red-600 transition-colors inline-block">FAQs</a></li>
+                <li><a href="#" class="hover:text-red-600 transition-colors inline-block">Contact Us</a></li>
+            </ul>
+        </div>
+
+        <div>
+            <h4 class="text-red-600 font-bold text-sm uppercase mb-4 md:mb-6 tracking-wider">Legal</h4>
+            <ul class="space-y-3 text-xs">
+                <li><a href="#" class="hover:text-red-600 transition-colors inline-block">Certificate of Incorporation</a></li>
+                <li><a href="#" class="hover:text-red-600 transition-colors inline-block">Privacy Policy</a></li>
+                <li><a href="#" class="hover:text-red-600 transition-colors inline-block">Terms of Service</a></li>
+            </ul>
+        </div>
+
+        <div>
+            <h4 class="text-red-600 font-bold text-sm uppercase mb-4 md:mb-6 tracking-wider">Contact</h4>
+            <div class="flex items-start md:items-center space-x-2 text-xs group">
+                <svg class="w-4 h-4 text-red-600 mt-0.5 md:mt-0 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"></path>
+                    <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"></path>
+                </svg>
+                <a href="mailto:support@teslaassetsfinance.com" class="hover:text-red-600 transition-colors break-all">
+                    support@teslaassetsfinance.com
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="max-w-7xl mx-auto mt-12 md:mt-16 pt-8 border-t border-gray-200 dark:border-zinc-800 text-center">
+        <p class="text-[10px] uppercase tracking-widest text-gray-500">
+            Copyright © 2026 All rights reserved
+        </p>
+    </div>
+</footer>
+
+
+<section>
+    <div id="chat-widget" class="fixed bottom-4 right-4 z-50 w-[320px] sm:w-[350px] font-sans shadow-2xl rounded-lg overflow-hidden hidden border border-zinc-200 bg-white slide-up">
+        <div id="options-menu" class="absolute inset-0 z-[60] bg-white hidden flex flex-col">
+            <div class="flex justify-between items-center p-4 border-b border-zinc-50">
+                <h3 class="font-bold text-zinc-800 text-lg">Options</h3>
+                <button onclick="toggleOptions()" class="p-2 text-zinc-400 hover:text-zinc-600">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+            <div class="p-4 flex flex-col gap-5">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                        <div class="w-8 h-8 rounded-full bg-[#c2362c] flex items-center justify-center text-white">
+                            <i class="fa-solid fa-bell"></i>
+                        </div>
+                        <span class="text-sm text-zinc-700">Play sounds</span>
+                    </div>
+                    <label class="switch">
+                        <input type="checkbox" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+            </div>
+            <div class="mt-auto p-4 text-center">
+                <span class="text-[10px] text-zinc-300 uppercase">Powered by Smartsupp</span>
+            </div>
+        </div>
+
+        <div class="bg-[#c2362c] p-4 text-white">
+            <div class="flex justify-between items-start mb-2">
+                <button onclick="closeChat()" class="hover:bg-white/10 p-1 px-2 rounded transition-colors">
+                    <i class="fa-solid fa-xmark text-sm"></i>
+                </button>
+                <div class="flex gap-3 text-sm">
+                    <i class="fa-solid fa-ellipsis-vertical cursor-pointer p-1" onclick="toggleOptions()"></i>
+                    <i class="fa-solid fa-chevron-down cursor-pointer p-1" onclick="closeChat()"></i>
+                </div>
+            </div>
+            <div class="flex items-center gap-3">
+                <!-- <div class="w-10 h-10 bg-white rounded-full flex-shrink-0 flex items-center justify-center text-[#c2362c] text-xl font-bold">T</div> -->
+                <img src="img/logo/tesla-icon.jpg" class="rounded-full w-10 h-10">
+                <div class="leading-tight">
+                    <h3 class="font-bold text-sm sm:text-base">How can we help?</h3>
+                    <div class="flex items-center gap-1.5 text-[11px] opacity-90">
+                        <span class="w-2 h-2 bg-green-400 rounded-full"></span>
+                        We reply immediately
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="chat-messages" class="h-[300px] sm:h-[350px] p-4 flex flex-col gap-4 overflow-y-auto bg-zinc-50 lang-scroll">
+            <div class="flex gap-2 items-end">
+                <div class="w-7 h-7 bg-zinc-200 rounded-full flex-shrink-0 flex items-center justify-center text-[10px]">
+                    <i class="fa-solid fa-robot text-zinc-500"></i>
+                </div>
+                <div class="flex flex-col">
+                    <div class="bg-zinc-200 text-zinc-800 p-3 rounded-xl rounded-bl-none text-xs sm:text-sm max-w-[90%] shadow-sm">
+                        Welcome to Tesla Assets Finance! 👋
+                    </div>
+                    <span class="text-[9px] text-zinc-400 mt-1 ml-1 uppercase font-semibold">Just now</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="border-t border-zinc-100 p-3 sm:p-4 bg-white">
+            <div class="relative flex items-center">
+                <input type="text" id="chat-input" placeholder="Type here..." 
+                    class="w-full bg-zinc-50 border border-zinc-200 rounded-full py-2.5 px-4 pr-10 text-xs sm:text-sm focus:ring-1 focus:ring-[#c2362c]/20 outline-none">
+                <div class="absolute right-3 top-1/2 -translate-y-1/2 flex items-center">
+                    <i id="smile-icon" onclick="toggleEmojiPanel()" class="fa-regular fa-face-smile text-lg text-zinc-400 cursor-pointer hover:text-zinc-600"></i>
+                    <button id="send-btn" onclick="sendMessage()" class="hidden text-[#c2362c] hover:text-[#a12d25] transition-colors">
+                        <i class="fa-solid fa-paper-plane text-lg"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div onclick="openChat()" id="chat-launcher" class="fixed bottom-4 right-4 z-[40] cursor-pointer flex items-center group">
+        <div class="bg-[#c2362c] text-white px-5 sm:px-6 py-2.5 rounded-full flex items-center gap-3 sm:gap-4 shadow-xl group-hover:bg-[#a12d25] transition-all relative">
+            <span class="font-medium text-base sm:text-lg">Chat</span>
+            <div class="w-7 h-7 sm:w-8 sm:h-8 bg-white/20 rounded-full flex items-center justify-center relative">
+                <i class="fa-solid fa-comment text-white text-base sm:text-lg"></i>
+                <div class="absolute -top-1.5 -right-1.5 bg-white text-[#c2362c] text-[10px] font-bold w-5 h-5 rounded-full flex items-center justify-center border-2 border-[#c2362c] shadow-sm">1</div>
+            </div>
+        </div>
+        <div class="absolute -bottom-0.5 -left-0.5 w-4 h-4 bg-green-500 border-2 border-white rounded-full online-pulse"></div>
+    </div>
+</section>
+
+<section>
+    <div class="fixed bottom-4 sm:bottom-6 left-4 sm:left-6 font-sans z-[100]" onclick="event.stopPropagation()">
+        
+        <div id="lang-popup" class="hidden absolute bottom-16 left-0 mb-2 w-[280px] sm:w-72 bg-white rounded-lg shadow-2xl border border-zinc-100 overflow-hidden">
+            
+            <div class="p-3 border-b border-zinc-100 bg-zinc-50/50">
+                <div class="relative flex items-center">
+                    <i class="fa-solid fa-magnifying-glass absolute left-3 text-zinc-400 text-xs"></i>
+                    <input type="text" id="lang-search" onkeyup="filterLanguages()" placeholder="Search countries..." 
+                        class="w-full text-sm pl-8 pr-3 py-2.5 outline-none border rounded-md bg-white border-zinc-200 focus:border-[#c2362c] transition-colors">
+                </div>
+            </div>
+
+            <div class="max-h-[300px] sm:max-h-[400px] overflow-y-auto p-1 lang-scroll" id="lang-list">
+                <div class="px-3 py-2 text-[10px] font-bold text-blue-600 uppercase tracking-wider">The Americas</div>
+                <button onclick="selectLang(event, 'us', 'EN')" class="lang-item w-full flex items-center gap-3 px-3 py-2.5 hover:bg-zinc-50 rounded transition-colors text-sm text-zinc-700">
+                    <span class="fi fi-us shadow-sm"></span> United States
+                </button>
+                <button onclick="selectLang(event, 'mx', 'ES')" class="lang-item w-full flex items-center gap-3 px-3 py-2.5 hover:bg-zinc-50 rounded transition-colors text-sm text-zinc-700">
+                    <span class="fi fi-mx shadow-sm"></span> Mexico
+                </button>
+
+                <div class="px-3 py-2 mt-2 text-[10px] font-bold text-[#c2362c] uppercase tracking-wider">Africa</div>
+                <button onclick="selectLang(event, 'ng', 'EN')" class="lang-item w-full flex items-center gap-3 px-3 py-2.5 hover:bg-zinc-50 rounded transition-colors text-sm text-zinc-700">
+                    <span class="fi fi-ng shadow-sm"></span> Nigeria
+                </button>
+                <button onclick="selectLang(event, 'za', 'EN')" class="lang-item w-full flex items-center gap-3 px-3 py-2.5 hover:bg-zinc-50 rounded transition-colors text-sm text-zinc-700">
+                    <span class="fi fi-za shadow-sm"></span> South Africa
+                </button>
+                </div>
+        </div>
+
+        <button onclick="toggleLangMenu(event)" class="flex items-center gap-2 bg-white px-3 py-2.5 rounded-md shadow-lg border border-zinc-200 hover:bg-zinc-50 transition-all active:scale-95 group">
+            <span id="current-flag" class="fi fi-us text-lg shadow-sm"></span>
+            <span id="current-label" class="font-bold text-zinc-800 text-sm">EN</span>
+            <i class="fa-solid fa-chevron-up text-[10px] text-zinc-400 group-hover:text-zinc-600 transition-colors"></i>
+        </button>
+    </div>
+</section>
+
+ <div id="refresh-notification" class="fixed bottom-28 left-[-400px] z-[200] flex items-center bg-white shadow-2xl rounded-sm overflow-hidden border border-zinc-100 transition-all duration-700 ease-out max-w-[320px] font-sans">
+    
+    <div class="bg-[#c2362c] p-4 flex items-center justify-center">
+        <div class="w-10 h-10 rounded-full border-2 border-white/20 flex items-center justify-center text-white">
+            <i class="fa-solid fa-comment-dollar text-xl"></i>
+        </div>
+    </div>
+
+    <div class="p-3 pr-6 bg-white">
+        <p class="text-zinc-800 text-sm leading-snug">
+            <span id="notif-name" class="font-medium">Lorn</span> from 
+            <span id="notif-city" class="font-medium">St. Louis</span> just earned 
+            <span class="text-[#c2362c] font-bold">$<span id="notif-amount">3513</span></span> 
+            5 minutes ago.
+        </p>
+    </div>
+
+    <button onclick="hideNotification()" class="absolute top-1 right-1 text-zinc-300 hover:text-zinc-500 transition-colors">
+        <i class="fa-solid fa-xmark text-[10px]"></i>
+    </button>
+</div>
+
+</body>
+
+ <script type="text/javascript">
+
+  const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+  const mobileMenu = document.getElementById('mobile-menu');
+
+  mobileMenuBtn.addEventListener('click', () => {
+    // This toggles the 'hidden' class on and off
+    mobileMenu.classList.toggle('hidden');
+  });
+
+
+  const themeBtn = document.getElementById('theme-toggle');
+const currentTheme = localStorage.getItem('theme');
+
+// 1. Check if user has a saved preference
+if (currentTheme === 'dark') {
+  document.body.classList.add('dark-mode');
+}
+
+// 2. Add click event listener
+themeBtn.addEventListener('click', () => {
+  // Toggle the class
+  document.body.classList.toggle('dark-mode');
+  
+  // Save the preference to LocalStorage
+  let theme = 'light';
+  if (document.body.classList.contains('dark-mode')) {
+    theme = 'dark';
+  }
+  localStorage.setItem('theme', theme);
+});
+
+const modal = document.getElementById('imageModal');
+
+    // Function to show the modal
+    function openModal() {
+        modal.classList.remove('hidden');
+        // Prevent background scrolling when modal is open
+        document.body.style.overflow = 'hidden';
+    }
+
+    // Function to hide the modal
+    function closeModal() {
+        modal.classList.add('hidden');
+        // Restore scrolling
+        document.body.style.overflow = 'auto';
+    }
+
+    // Optional: Close modal if user presses "Escape" key
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') closeModal();
+    });
+
+     const chatMessages = document.getElementById('chat-messages');
+    const chatInput = document.getElementById('chat-input');
+    const chatWidget = document.getElementById('chat-widget');
+    const chatLauncher = document.getElementById('chat-launcher');
+    const smileIcon = document.getElementById('smile-icon');
+    const sendBtn = document.getElementById('send-btn');
+    const optionsMenu = document.getElementById('options-menu');
+    const popup = document.getElementById('lang-popup');
+    const searchInput = document.getElementById('lang-search');
+
+    // Chat Logic
+    function openChat() { 
+        chatWidget.style.display = 'block'; 
+        chatLauncher.style.visibility = 'hidden'; 
+    }
+    function closeChat() { 
+        chatWidget.style.display = 'none'; 
+        chatLauncher.style.visibility = 'visible'; 
+    }
+    function toggleOptions() { optionsMenu.classList.toggle('hidden'); }
+    
+    function sendMessage() {
+        const text = chatInput.value.trim();
+        if (text === "") return;
+
+        const userHtml = `<div class="flex flex-col items-end"><div class="bg-[#c2362c] text-white p-3 rounded-xl rounded-br-none text-xs sm:text-sm max-w-[85%] shadow-sm">${text}</div><span class="text-[9px] text-zinc-400 mt-1 mr-1 uppercase font-semibold">Just now</span></div>`;
+        chatMessages.insertAdjacentHTML('beforeend', userHtml);
+        chatInput.value = "";
+        chatInput.dispatchEvent(new Event('input'));
+
+        setTimeout(() => {
+            const botHtml = `<div class="flex gap-2 items-end"><div class="w-7 h-7 bg-zinc-200 rounded-full flex-shrink-0 flex items-center justify-center text-[10px]"><i class="fa-solid fa-robot text-zinc-500"></i></div><div class="flex flex-col w-[85%]"><div class="bg-zinc-200 text-zinc-800 p-3 rounded-xl rounded-bl-none text-xs sm:text-sm shadow-sm border border-zinc-100"><p class="mb-2">We’re busy right now. Leave your email and we'll contact you.</p><div class="flex flex-col gap-2 mt-2"><input type="email" placeholder="Email address" class="w-full p-2.5 border border-zinc-300 rounded text-xs outline-none focus:border-[#c2362c]"><button onclick="this.parentElement.innerHTML='<span class=\'text-green-600 font-bold\'>✓ Received!</span>'" class="bg-[#c2362c] text-white py-2 rounded font-bold text-[10px] uppercase">Send</button></div></div><span class="text-[9px] text-zinc-400 mt-1 ml-1 uppercase font-semibold">Just now</span></div></div>`;
+            chatMessages.insertAdjacentHTML('beforeend', botHtml);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }, 600);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+
+    chatInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') sendMessage(); });
+    chatInput.addEventListener('input', function() {
+        if (this.value.trim().length > 0) {
+            smileIcon.classList.add('hidden');
+            sendBtn.classList.remove('hidden');
+        } else {
+            smileIcon.classList.remove('hidden');
+            sendBtn.classList.add('hidden');
+        }
+    });
+
+   // Language Logic
+    function toggleLang() {
+        const isHidden = popup.classList.toggle('hidden');
+        if(!isHidden) {
+            searchInput.value = '';
+            filterItems(''); 
+            searchInput.focus();
+        }
+    }
+
+    document.addEventListener('click', (e) => {
+        if (!e.target.closest('.fixed')) {
+            popup.classList.add('hidden');
+        }
+    });
+
+   function toggleLangMenu(e) {
+    e.stopPropagation();
+    const popup = document.getElementById('lang-popup');
+    popup.classList.toggle('hidden');
+}
+
+function selectLang(e, countryCode, langCode) {
+    // 1. Prevent click from closing/opening other things
+    e.stopPropagation();
+
+    // 2. Update the Main Button UI (Flag and Label)
+    const currentFlag = document.getElementById('current-flag');
+    const currentLabel = document.getElementById('current-label');
+    
+    if (currentFlag) currentFlag.className = `fi fi-${countryCode} text-lg shadow-sm`;
+    if (currentLabel) currentLabel.innerText = langCode;
+
+    // 3. Close the menu
+    document.getElementById('lang-popup').classList.add('hidden');
+
+    // 4. SITE TRANSLATION LOGIC
+    // Option A: If you use folders (e.g., mysite.com/es/)
+    // window.location.href = `/${langCode.toLowerCase()}/` + window.location.search;
+
+    // Option B: If you use Google Translate or a script
+    console.log(`Switching site language to: ${langCode}`);
+    
+    // Alert for demo purposes
+    // alert("Site language would now change to " + langCode);
+}
+function filterLanguages() {
+    let input = document.getElementById('lang-search').value.toLowerCase();
+    let items = document.getElementsByClassName('lang-item');
+    
+    for (let i = 0; i < items.length; i++) {
+        if (items[i].innerText.toLowerCase().includes(input)) {
+            items[i].style.display = "";
+        } else {
+            items[i].style.display = "none";
+        }
+    }
+}
+
+
+// Close popup when clicking anywhere else on the screen
+document.addEventListener('click', function(event) {
+    const popup = document.getElementById('lang-popup');
+    if (!event.target.closest('.fixed')) {
+        popup.classList.add('hidden');
+    }
+});
+
+function filterLanguages() {
+    let input = document.getElementById('lang-search').value.toLowerCase();
+    let items = document.getElementsByClassName('lang-item');
+    
+    for (let i = 0; i < items.length; i++) {
+        if (items[i].innerText.toLowerCase().includes(input)) {
+            items[i].style.display = "";
+        } else {
+            items[i].style.display = "none";
+        }
+    }
+}
+
+
+
+// 3. Close menu if user clicks anywhere else on the screen
+document.addEventListener('click', function() {
+    const popup = document.getElementById('lang-popup');
+    if (popup) popup.classList.add('hidden');
+});
+    searchInput.addEventListener('input', (e) => filterItems(e.target.value));
+
+    window.addEventListener('load', () => {
+        const notification = document.getElementById('refresh-notification');
+        
+        // List of names and cities to make it look dynamic on refresh
+        const names = ["Lorn", "Sarah", "James", "Elena", "Marcus"];
+        const cities = ["St. Louis", "Chicago", "London", "Berlin", "Sydney"];
+        const amounts = ["3513", "2480", "5120", "1950", "4300"];
+
+        // Randomize the content
+        const randomIdx = Math.floor(Math.random() * names.length);
+        document.getElementById('notif-name').innerText = names[randomIdx];
+        document.getElementById('notif-city').innerText = cities[randomIdx];
+        document.getElementById('notif-amount').innerText = amounts[randomIdx];
+
+        // Slide the notification in after 1 second
+        setTimeout(() => {
+            notification.style.left = '24px'; // Slides into view
+        }, 1000);
+
+        // Auto-hide after 6 seconds
+        setTimeout(() => {
+            hideNotification();
+        }, 7000);
+    });
+
+    function hideNotification() {
+        const notification = document.getElementById('refresh-notification');
+        notification.style.left = '-400px';
+    }
+</script>
+</html>

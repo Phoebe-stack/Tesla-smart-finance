@@ -16,7 +16,7 @@
   <title></title>
   <script src="https://cdn.tailwindcss.com"></script>
 <script>
-  // Removed darkMode config to prevent Tailwind from looking for selectors
+  // Tailwind config for dark mode removed to prevent style conflicts
   tailwind.config = {
     theme: {
       extend: {}
@@ -25,14 +25,13 @@
 </script>
 
 <style type="text/css">
-  /* --- 1. Permanent Theme Variables --- */
+  /* --- 1. Global Reset & Permanent Theme --- */
   :root {
     --bg-color: #121212;
     --text-color: #f5f5f5;
     --btn-bg: #333333;
   }
 
-  /* --- 2. Page Styles --- */
   body {
     background-color: var(--bg-color);
     color: var(--text-color);
@@ -40,7 +39,7 @@
     height: 100vh;
   }
 
-  /* --- 3. Marquee Animation --- */
+  /* --- 2. Animations --- */
   @keyframes marquee {
     0% { transform: translateX(0); }
     100% { transform: translateX(-50%); } 
@@ -56,10 +55,11 @@
     animation-play-state: paused;
   }
 
-  /* --- 4. Typography & Backgrounds --- */
+  /* --- 3. UI Components --- */
   .besley {
     font-family: "Besley", serif;
     font-optical-sizing: auto;
+    font-weight: normal;
     font-style: normal;
   }
 
@@ -70,7 +70,6 @@
     background-position: center;
   }
 
-  /* --- 5. UI Elements & Scrollers --- */
   .lang-scroll::-webkit-scrollbar { width: 5px; }
   .lang-scroll::-webkit-scrollbar-track { background: transparent; }
   .lang-scroll::-webkit-scrollbar-thumb { background: #e5e7eb; border-radius: 10px; }
@@ -97,7 +96,7 @@
     100% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); }
   }
 
-  /* --- 6. Responsive Adjustments --- */
+  /* --- 4. Responsive adjustments --- */
   @media (max-width: 640px) {
     #chat-widget { 
       width: calc(100% - 2rem) !important; 
@@ -598,57 +597,151 @@
   const mobileMenu = document.getElementById('mobile-menu');
 
   mobileMenuBtn.addEventListener('click', () => {
+    // This toggles the 'hidden' class on and off
     mobileMenu.classList.toggle('hidden');
   });
 
-  // --- Crypto Calculator Logic ---
-  const cryptoInput = document.getElementById('crypto-input');
-  const cryptoSelect = document.getElementById('crypto-select');
-  const fiatSelect = document.getElementById('fiat-select');
-  const valOutput = document.getElementById('val-output');
-  const cryptoLabel = document.getElementById('crypto-label');
+  // --- FAQ Accordion Logic ---
+  document.querySelectorAll('.faq-toggle').forEach(button => {
+    button.addEventListener('click', () => {
+      const container = button.parentElement;
+      const content = button.nextElementSibling;
+      const icon = button.querySelector('.icon');
+      const questionText = button.querySelector('.question-text');
+      const answerText = content.querySelector('div');
 
-  // Rates relative to 1 USD
-  const baseRates = {
-    BTC: 70458.88, ETH: 3850.20, SOL: 145.50, BNB: 580.40, XRP: 0.62,
-    USDC: 1.00, LINK: 18.25, LEO: 5.90, SHIB: 0.000027, USDE: 1.00,
-    USDS: 1.00, PEPE: 0.000008, UNI: 11.40, DAI: 1.00, JRY: 0.05
-  };
+      const isOpen = content.style.maxHeight !== '0px' && content.style.maxHeight !== '';
 
-  const fiatMultipliers = {
-    USD: 1, EUR: 0.92, GBP: 0.78, AUD: 1.52, CAD: 1.35, 
-    CHF: 0.88, CNY: 7.23, NOK: 10.65, NZD: 1.64
-  };
+      // Reset all other FAQ items
+      document.querySelectorAll('.faq-content').forEach(c => c.style.maxHeight = '0px');
+      document.querySelectorAll('.faq-content div').forEach(d => d.classList.remove('text-red-600'));
+      document.querySelectorAll('.icon').forEach(i => i.textContent = '+');
+      document.querySelectorAll('.question-text').forEach(q => q.classList.remove('text-red-600'));
+      document.querySelectorAll('.faq-container').forEach(con => {
+        con.classList.remove('border-red-600', 'ring-1', 'ring-red-600');
+      });
 
-  function calculate() {
-    const crypto = cryptoSelect.value;
-    const fiat = fiatSelect.value;
-    const amount = parseFloat(cryptoInput.value) || 0;
-    
-    const priceInUSD = baseRates[crypto];
-    const finalValue = amount * priceInUSD * fiatMultipliers[fiat];
-
-    cryptoLabel.innerText = `${crypto} ${amount}`;
-    
-    valOutput.innerText = finalValue.toLocaleString('en-US', {
-      style: 'currency',
-      currency: fiat,
-      minimumFractionDigits: 2
+      if (!isOpen) {
+        // ACTIVE STATE
+        content.style.maxHeight = content.scrollHeight + "px";
+        icon.textContent = '-';
+        questionText.classList.add('text-red-600');
+        answerText.classList.add('text-red-600');
+        container.classList.add('border-red-600', 'ring-1', 'ring-red-600');
+      } else {
+        // CLOSED STATE
+        content.style.maxHeight = '0px';
+        icon.textContent = '+';
+        questionText.classList.remove('text-red-600');
+        answerText.classList.remove('text-red-600');
+        container.classList.remove('border-red-600', 'ring-1', 'ring-red-600');
+      }
     });
+  });
+
+  // --- Chat Widget Logic ---
+  const chatMessages = document.getElementById('chat-messages');
+  const chatInput = document.getElementById('chat-input');
+  const chatWidget = document.getElementById('chat-widget');
+  const chatLauncher = document.getElementById('chat-launcher');
+  const smileIcon = document.getElementById('smile-icon');
+  const sendBtn = document.getElementById('send-btn');
+  const optionsMenu = document.getElementById('options-menu');
+  const popup = document.getElementById('lang-popup');
+  const searchInput = document.getElementById('lang-search');
+
+  function openChat() {
+    chatWidget.style.display = 'block';
+    chatLauncher.style.visibility = 'hidden';
+  }
+  function closeChat() {
+    chatWidget.style.display = 'none';
+    chatLauncher.style.visibility = 'visible';
+  }
+  function toggleOptions() {
+    optionsMenu.classList.toggle('hidden');
   }
 
-  function setAmount(num) {
-    cryptoInput.value = num;
-    calculate();
+  function sendMessage() {
+    const text = chatInput.value.trim();
+    if (text === "") return;
+
+    const userHtml = `<div class="flex flex-col items-end"><div class="bg-[#c2362c] text-white p-3 rounded-xl rounded-br-none text-xs sm:text-sm max-w-[85%] shadow-sm">${text}</div><span class="text-[9px] text-zinc-400 mt-1 mr-1 uppercase font-semibold">Just now</span></div>`;
+    chatMessages.insertAdjacentHTML('beforeend', userHtml);
+    chatInput.value = "";
+    chatInput.dispatchEvent(new Event('input'));
+
+    setTimeout(() => {
+      const botHtml = `<div class="flex gap-2 items-end"><div class="w-7 h-7 bg-zinc-200 rounded-full flex-shrink-0 flex items-center justify-center text-[10px]"><i class="fa-solid fa-robot text-zinc-500"></i></div><div class="flex flex-col w-[85%]"><div class="bg-zinc-200 text-zinc-800 p-3 rounded-xl rounded-bl-none text-xs sm:text-sm shadow-sm border border-zinc-100"><p class="mb-2">We’re busy right now. Leave your email and we'll contact you.</p><div class="flex flex-col gap-2 mt-2"><input type="email" placeholder="Email address" class="w-full p-2.5 border border-zinc-300 rounded text-xs outline-none focus:border-[#c2362c]"><button onclick="this.parentElement.innerHTML='<span class=\'text-green-600 font-bold\'>✓ Received!</span>'" class="bg-[#c2362c] text-white py-2 rounded font-bold text-[10px] uppercase">Send</button></div></div><span class="text-[9px] text-zinc-400 mt-1 ml-1 uppercase font-semibold">Just now</span></div></div>`;
+      chatMessages.insertAdjacentHTML('beforeend', botHtml);
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+    }, 600);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
   }
 
-  [cryptoInput, cryptoSelect, fiatSelect].forEach(el => el.addEventListener('input', calculate));
-  calculate();
+  chatInput.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') sendMessage();
+  });
+  chatInput.addEventListener('input', function() {
+    if (this.value.trim().length > 0) {
+      smileIcon.classList.add('hidden');
+      sendBtn.classList.remove('hidden');
+    } else {
+      smileIcon.classList.remove('hidden');
+      sendBtn.classList.add('hidden');
+    }
+  });
 
-  // --- Notification Logic ---
+  // --- Language Selection Logic ---
+  function toggleLang() {
+    const isHidden = popup.classList.toggle('hidden');
+    if (!isHidden) {
+      searchInput.value = '';
+      filterLanguages(); // Note: Changed from filterItems to match your function name below
+      searchInput.focus();
+    }
+  }
+
+  document.addEventListener('click', (e) => {
+    if (!e.target.closest('.fixed') && !e.target.closest('#lang-popup')) {
+      popup.classList.add('hidden');
+    }
+  });
+
+  function toggleLangMenu(e) {
+    e.stopPropagation();
+    popup.classList.toggle('hidden');
+  }
+
+  function selectLang(e, countryCode, langCode) {
+    e.stopPropagation();
+    const currentFlag = document.getElementById('current-flag');
+    const currentLabel = document.getElementById('current-label');
+
+    if (currentFlag) currentFlag.className = `fi fi-${countryCode} text-lg shadow-sm`;
+    if (currentLabel) currentLabel.innerText = langCode;
+
+    popup.classList.add('hidden');
+    console.log(`Switching site language to: ${langCode}`);
+  }
+
+  function filterLanguages() {
+    let input = searchInput.value.toLowerCase();
+    let items = document.getElementsByClassName('lang-item');
+
+    for (let i = 0; i < items.length; i++) {
+      if (items[i].innerText.toLowerCase().includes(input)) {
+        items[i].style.display = "";
+      } else {
+        items[i].style.display = "none";
+      }
+    }
+  }
+
+  // --- Notifications Logic ---
   window.addEventListener('load', () => {
     const notification = document.getElementById('refresh-notification');
-    
+
     const names = ["Lorn", "Sarah", "James", "Elena", "Marcus"];
     const cities = ["St. Louis", "Chicago", "London", "Berlin", "Sydney"];
     const amounts = ["3513", "2480", "5120", "1950", "4300"];
@@ -669,102 +762,7 @@
 
   function hideNotification() {
     const notification = document.getElementById('refresh-notification');
-    notification.style.left = '-400px';
-  }
-  
-  // --- Chat Widget Logic ---
-  const chatMessages = document.getElementById('chat-messages');
-  const chatInput = document.getElementById('chat-input');
-  const chatWidget = document.getElementById('chat-widget');
-  const chatLauncher = document.getElementById('chat-launcher');
-  const smileIcon = document.getElementById('smile-icon');
-  const sendBtn = document.getElementById('send-btn');
-  const optionsMenu = document.getElementById('options-menu');
-  const popup = document.getElementById('lang-popup');
-  const searchInput = document.getElementById('lang-search');
-
-  function openChat() { 
-    chatWidget.style.display = 'block'; 
-    chatLauncher.style.visibility = 'hidden'; 
-  }
-  function closeChat() { 
-    chatWidget.style.display = 'none'; 
-    chatLauncher.style.visibility = 'visible'; 
-  }
-  function toggleOptions() { optionsMenu.classList.toggle('hidden'); }
-  
-  function sendMessage() {
-    const text = chatInput.value.trim();
-    if (text === "") return;
-
-    const userHtml = `<div class="flex flex-col items-end"><div class="bg-[#c2362c] text-white p-3 rounded-xl rounded-br-none text-xs sm:text-sm max-w-[85%] shadow-sm">${text}</div><span class="text-[9px] text-zinc-400 mt-1 mr-1 uppercase font-semibold">Just now</span></div>`;
-    chatMessages.insertAdjacentHTML('beforeend', userHtml);
-    chatInput.value = "";
-    chatInput.dispatchEvent(new Event('input'));
-
-    setTimeout(() => {
-      const botHtml = `<div class="flex gap-2 items-end"><div class="w-7 h-7 bg-zinc-200 rounded-full flex-shrink-0 flex items-center justify-center text-[10px]"><i class="fa-solid fa-robot text-zinc-500"></i></div><div class="flex flex-col w-[85%]"><div class="bg-zinc-200 text-zinc-800 p-3 rounded-xl rounded-bl-none text-xs sm:text-sm shadow-sm border border-zinc-100"><p class="mb-2">We’re busy right now. Leave your email and we'll contact you.</p><div class="flex flex-col gap-2 mt-2"><input type="email" placeholder="Email address" class="w-full p-2.5 border border-zinc-300 rounded text-xs outline-none focus:border-[#c2362c]"><button onclick="this.parentElement.innerHTML='<span class=\'text-green-600 font-bold\'>✓ Received!</span>'" class="bg-[#c2362c] text-white py-2 rounded font-bold text-[10px] uppercase">Send</button></div></div><span class="text-[9px] text-zinc-400 mt-1 ml-1 uppercase font-semibold">Just now</span></div></div>`;
-      chatMessages.insertAdjacentHTML('beforeend', botHtml);
-      chatMessages.scrollTop = chatMessages.scrollHeight;
-    }, 600);
-    chatMessages.scrollTop = chatMessages.scrollHeight;
-  }
-
-  chatInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') sendMessage(); });
-  chatInput.addEventListener('input', function() {
-    if (this.value.trim().length > 0) {
-      smileIcon.classList.add('hidden');
-      sendBtn.classList.remove('hidden');
-    } else {
-      smileIcon.classList.remove('hidden');
-      sendBtn.classList.add('hidden');
-    }
-  });
-
-  // --- Language Selection Logic ---
-  function toggleLang() {
-    const isHidden = popup.classList.toggle('hidden');
-    if(!isHidden) {
-      searchInput.value = '';
-      filterLanguages(); 
-      searchInput.focus();
-    }
-  }
-
-  document.addEventListener('click', (e) => {
-    if (popup && !e.target.closest('#lang-popup') && !e.target.closest('[onclick*="toggleLang"]')) {
-      popup.classList.add('hidden');
-    }
-  });
-
-  function toggleLangMenu(e) {
-    e.stopPropagation();
-    document.getElementById('lang-popup').classList.toggle('hidden');
-  }
-
-  function selectLang(e, countryCode, langCode) {
-    e.stopPropagation();
-    const currentFlag = document.getElementById('current-flag');
-    const currentLabel = document.getElementById('current-label');
-    
-    if (currentFlag) currentFlag.className = `fi fi-${countryCode} text-lg shadow-sm`;
-    if (currentLabel) currentLabel.innerText = langCode;
-
-    document.getElementById('lang-popup').classList.add('hidden');
-    console.log(`Switching site language to: ${langCode}`);
-  }
-
-  function filterLanguages() {
-    let input = document.getElementById('lang-search').value.toLowerCase();
-    let items = document.getElementsByClassName('lang-item');
-    
-    for (let i = 0; i < items.length; i++) {
-      if (items[i].innerText.toLowerCase().includes(input)) {
-        items[i].style.display = "";
-      } else {
-        items[i].style.display = "none";
-      }
-    }
+    if (notification) notification.style.left = '-400px';
   }
 </script>
 </html>

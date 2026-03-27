@@ -1,45 +1,107 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<script src="https://cdn.tailwindcss.com"></script>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&display=swap" rel="stylesheet">
 
-<style>
-  body { font-family: 'Space Grotesk', sans-serif; }
-  .glass-card {
-    background: rgba(17, 17, 17, 0.75);
-    backdrop-filter: blur(16px) saturate(180%);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-  }
-  .star {
-    position: absolute;
-    background-color: rgba(255, 255, 255, 0.8);
-    border-radius: 50%;
-    animation: twinkle ease-in-out infinite;
-    opacity: 0;
-  }
-  @keyframes twinkle {
-    0%, 100% { opacity: 0; transform: scale(0.5); }
-    50% { opacity: 1; transform: scale(1); }
-  }
-</style>
+    <style>
+        body { 
+            font-family: 'Space Grotesk', sans-serif; 
+            background-color: #050505;
+        }
+        
+        .glass-card {
+            background: rgba(17, 17, 17, 0.85);
+            backdrop-filter: blur(20px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
 
-<div class="min-h-screen bg-gradient-to-br from-indigo-950 via-gray-950 to-red-950 flex flex-col items-center justify-center p-4 sm:p-6 relative overflow-hidden">
+        /* Hide Scrollbar but keep functionality */
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+        .star {
+            position: absolute;
+            background-color: rgba(255, 255, 255, 0.8);
+            border-radius: 50%;
+            animation: twinkle ease-in-out infinite;
+            opacity: 0;
+            pointer-events: none;
+        }
+        @keyframes twinkle {
+            0%, 100% { opacity: 0; transform: scale(0.5); }
+            50% { opacity: 1; transform: scale(1); }
+        }
+    </style>
+</head>
+
+<body class="no-scrollbar">
+<div class="min-h-screen bg-gradient-to-br from-indigo-950 via-gray-950 to-red-950 flex flex-col items-center justify-start sm:justify-center p-6 sm:p-8 relative overflow-x-hidden">
   
   <div class="absolute top-0 left-0 w-full h-full pointer-events-none">
-    <div class="absolute w-64 h-64 sm:w-96 sm:h-96 bg-purple-500/10 rounded-full blur-3xl opacity-60 animate-pulse left-[-10%] top-[-10%] sm:left-1/4 sm:top-1/4"></div>
-    <div class="absolute w-64 h-64 sm:w-80 sm:h-80 bg-blue-500/10 rounded-full blur-3xl opacity-60 animate-pulse right-[-10%] bottom-[-10%] sm:right-1/4 sm:bottom-1/4"></div>
+    <div class="absolute w-72 h-72 sm:w-96 sm:h-96 bg-purple-500/10 rounded-full blur-[100px] opacity-60 animate-pulse left-[-10%] top-[-10%] sm:left-1/4 sm:top-1/4"></div>
+    <div class="absolute w-72 h-72 sm:w-80 sm:h-80 bg-red-500/10 rounded-full blur-[100px] opacity-60 animate-pulse right-[-10%] bottom-[-10%] sm:right-1/4 sm:bottom-1/4"></div>
+  </div>
+
+  <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-red-600 to-transparent opacity-40"></div>
+
+  <div class="mt-12 mb-10 sm:mt-0 sm:mb-12 flex flex-col items-center relative z-10">
+    <img class="h-10 md:h-12 w-auto object-contain" src="img/logo/tesla-logo.png" alt="Tesla Logo">
+  </div>
+
+  <div class="glass-card w-full max-w-[95%] sm:max-w-md rounded-[2.5rem] sm:rounded-[3rem] shadow-[0_30px_60px_rgba(0,0,0,0.7)] p-8 sm:p-12 relative z-10">
+    <h2 class="text-white text-3xl sm:text-4xl font-bold text-center mb-10 tracking-tight">User Login</h2>
+
+    <form class="space-y-6 sm:space-y-7">
+      <div class="relative group">
+        <span class="absolute inset-y-0 left-0 pl-5 flex items-center text-zinc-500 group-focus-within:text-red-500 transition-colors">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207"/></svg>
+        </span>
+        <input type="text" placeholder="iam_phoebe1" class="block w-full pl-14 pr-5 py-5 bg-black/50 border border-zinc-800 rounded-2xl focus:ring-2 focus:ring-red-600 focus:border-red-600 outline-none text-white text-[17px] transition-all placeholder-zinc-700 shadow-inner">
+      </div>
+
+      <div class="relative group">
+        <span class="absolute inset-y-0 left-0 pl-5 flex items-center text-zinc-500 group-focus-within:text-red-500 transition-colors">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+        </span>
+        <input type="password" placeholder="••••••••••••" class="block w-full pl-14 pr-5 py-5 bg-black/50 border border-zinc-800 rounded-2xl focus:ring-2 focus:ring-red-600 focus:border-red-600 outline-none text-white text-[17px] transition-all placeholder-zinc-700 shadow-inner">
+      </div>
+
+      <div class="flex flex-col sm:flex-row items-center justify-between gap-4 text-sm px-1">
+        <label class="flex items-center text-zinc-400 cursor-pointer hover:text-white transition-colors">
+          <input type="checkbox" class="w-5 h-5 rounded border-zinc-800 bg-black text-red-600 focus:ring-0 mr-3">
+          Keep me logged in
+        </label>
+        <a href="#" class="text-zinc-400 hover:text-red-500 transition-colors font-medium">Forgot Password?</a>
+      </div>
+
+      <button type="submit" class="w-full bg-[#e31937] hover:bg-red-700 text-white font-black py-5 rounded-2xl transition-all shadow-[0_15px_30px_rgba(227,25,55,0.3)] active:scale-95 text-lg tracking-wide">
+        Authorize Access
+      </button>
+
+      <div class="text-center pt-6 space-y-8">
+        <p class="text-zinc-400 text-base">
+          New here? <br><a href="sign-up.html" class="text-white font-bold hover:text-red-500 underline underline-offset-8 decoration-red-600">Create Account</a>
+        </p>
+        
+        <p class="text-zinc-600 text-[10px] tracking-[0.4em] uppercase leading-relaxed">
+          Secure Encrypted Portal <br>
+          © 2026 Tesla Assets Finance
+        </p>
+      </div>
+    </form>
   </div>
 
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       const bg = document.querySelector('.min-h-screen');
-      // Reduced count slightly for mobile performance
-      const starCount = window.innerWidth < 640 ? 40 : 70;
+      const starCount = window.innerWidth < 640 ? 50 : 80;
       for (let i = 0; i < starCount; i++) {
         const star = document.createElement('div');
         star.classList.add('star');
-        star.style.width = star.style.height = `${Math.random() * 3 + 1}px`;
+        star.style.width = star.style.height = `${Math.random() * 2 + 1}px`;
         star.style.left = `${Math.random() * 100}%`;
         star.style.top = `${Math.random() * 100}%`;
         star.style.animationDuration = `${Math.random() * 3 + 2}s`;
@@ -48,62 +110,6 @@
       }
     });
   </script>
-
-  <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-red-600 to-transparent opacity-40"></div>
-
-  <div class="mb-8 sm:mb-10 flex flex-col items-center relative z-10">
-        <img class="h-8 md:h-10 w-auto object-contain relative z-10" src="img/logo/tesla-logo.png" alt="Tesla Logo">
-  </div>
-
-  <div class="glass-card w-full max-w-[90%] sm:max-w-md rounded-[2rem] sm:rounded-[3rem] shadow-[0_20px_50px_rgba(0,0,0,0.6)] p-6 sm:p-10 relative z-10">
-    <h2 class="text-white text-xl sm:text-2xl font-bold text-center mb-6 sm:mb-10 tracking-tight">User Login</h2>
-
-    <form class="space-y-4 sm:space-y-5">
-      <div>
-        <div class="relative">
-          <span class="absolute inset-y-0 left-0 pl-4 flex items-center text-zinc-600">
-            <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207"/></svg>
-          </span>
-          <input type="text" placeholder="iam_phoebe1" class="block w-full pl-10 sm:pl-12 pr-4 py-3 sm:py-4 bg-black/40 border border-zinc-800/50 rounded-xl sm:rounded-2xl focus:ring-1 focus:ring-red-600/50 focus:border-red-600 outline-none text-white placeholder-zinc-700 transition-all text-sm sm:text-base">
-        </div>
-      </div>
-
-      <div>
-        <div class="relative">
-          <span class="absolute inset-y-0 left-0 pl-4 flex items-center text-zinc-600">
-            <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
-          </span>
-          <input type="password" placeholder="••••••••••••" class="block w-full pl-10 sm:pl-12 pr-4 py-3 sm:py-4 bg-black/40 border border-zinc-800/50 rounded-xl sm:rounded-2xl focus:ring-1 focus:ring-red-600/50 focus:border-red-600 outline-none text-white placeholder-zinc-700 transition-all text-sm sm:text-base">
-        </div>
-      </div>
-
-      <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-0 text-[10px] sm:text-[11px] px-1">
-        <label class="flex items-center text-zinc-500 cursor-pointer hover:text-zinc-300">
-          <input type="checkbox" class="w-3.5 h-3.5 rounded border-zinc-800 bg-black text-red-600 focus:ring-0 mr-2">
-          Keep me logged in
-        </label>
-        <a href="#" class="text-zinc-500 hover:text-red-500 transition-colors">Forgot Password?</a>
-      </div>
-
-      <button type="submit" class="w-full bg-[#e31937] hover:bg-red-700 text-white font-bold py-3 sm:py-4 rounded-xl sm:rounded-2xl transition-all shadow-[0_10px_20px_rgba(227,25,55,0.2)] active:scale-95 text-base sm:text-lg">
-        Authorize Access
-      </button>
-
-      <div class="text-center pt-2">
-        <p class="text-zinc-500 text-[11px] sm:text-xs">
-          New here? <a href="sign-up.html" class="text-white font-bold hover:text-red-500 underline underline-offset-4 decoration-red-900">Create Account</a>
-        </p>
-        <br>
-        <p class="text-zinc-700 text-[8px] sm:text-[9px] tracking-[0.2em] sm:tracking-[0.3em] uppercase text-center leading-relaxed">
-      Secure Encrypted Portal <br class="sm:hidden">
-      © 2026 Tesla Assets Finance
-    </p>
-      </div>
-    </form>
-  </div>
-
-  
-
 </div>
-</head>
+</body>
 </html>

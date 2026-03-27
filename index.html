@@ -13,7 +13,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Besley:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.0.2/css/flag-icons.min.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-  <title></title>
+  <title>Tesla-smart-finance</title>
   <script src="https://cdn.tailwindcss.com"></script>
 <script>
   tailwind.config = {
@@ -37,15 +37,15 @@
     }
 
     :root {
-  --bg-color: #ffffff;
-  --text-color: #1a1a1a;
-  --btn-bg: #eeeeee;
-}
-
-body.dark-mode {
   --bg-color: #121212;
   --text-color: #f5f5f5;
   --btn-bg: #333333;
+}
+
+body.dark-mode {
+--bg-color: #ffffff;
+  --text-color: #1a1a1a;
+  --btn-bg: #eeeeee;
 }
 
 /* --- 2. Page Styles --- */
@@ -1026,9 +1026,9 @@ themeBtn.addEventListener('click', () => {
   document.body.classList.toggle('dark-mode');
   
   // Save the preference to LocalStorage
-  let theme = 'light';
+  let theme = 'dark';
   if (document.body.classList.contains('dark-mode')) {
-    theme = 'dark';
+    theme = 'light';
   }
   localStorage.setItem('theme', theme);
 });

@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&display=swap" rel="stylesheet">
+    <title>Login - Tesla-smart-finance</title>
+    <link rel="icon" type="image/webp" href="img/logo/tesla-fav.webp">
 
     <style>
         body { 
@@ -38,6 +40,30 @@
 </head>
 
 <body class="no-scrollbar">
+
+<a href="index.html" 
+   class="fixed top-6 left-6 z-[150] group flex items-center space-x-3 px-5 py-2.5 
+          bg-white/10 dark:bg-black/20 backdrop-blur-md border border-zinc-200/50 dark:border-zinc-800/50 
+          rounded-full shadow-xl transition-all duration-500 hover:scale-105 hover:border-red-600/50">
+    
+    <svg class="w-4 h-4 text-yellow-400 animate-pulse group-hover:rotate-45 transition-transform" 
+         fill="currentColor" viewBox="0 0 24 24">
+        <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+    </svg>
+
+    <span class="text-[11px] font-black uppercase tracking-[0.2em] text-zinc-800 dark:text-zinc-200 group-hover:text-red-600 transition-colors">
+        Back to Home
+    </span>
+
+    <svg class="w-4 h-4 text-yellow-400 animate-pulse group-hover:-rotate-45 transition-transform" 
+         fill="currentColor" viewBox="0 0 24 24">
+        <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+    </svg>
+
+    <div class="absolute inset-0 rounded-full bg-red-600/0 group-hover:bg-red-600/5 blur-md transition-all"></div>
+</a>
+
+
 <div class="min-h-screen bg-gradient-to-br from-indigo-950 via-gray-950 to-red-950 flex flex-col items-center justify-start sm:justify-center p-6 sm:p-8 relative overflow-x-hidden">
   
   <div class="absolute top-0 left-0 w-full h-full pointer-events-none">
@@ -48,7 +74,7 @@
   <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-red-600 to-transparent opacity-40"></div>
 
   <div class="mt-12 mb-10 sm:mt-0 sm:mb-12 flex flex-col items-center relative z-10">
-    <img class="h-10 md:h-12 w-auto object-contain" src="img/logo/tesla-logo.png" alt="Tesla Logo">
+    <img class="h-10 md:h-12 w-auto object-contain" src="img/logo/tesla-logo.webp" alt="Tesla Logo">
   </div>
 
   <div class="glass-card w-full max-w-[95%] sm:max-w-md rounded-[2.5rem] sm:rounded-[3rem] shadow-[0_30px_60px_rgba(0,0,0,0.7)] p-8 sm:p-12 relative z-10">
